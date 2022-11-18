@@ -19,10 +19,9 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       required: true
     },
-    password: {
+    walletAddress: {
       type: String,
-      required: true,
-      select: false
+      required: true
     },
     role: {
       type: String,
