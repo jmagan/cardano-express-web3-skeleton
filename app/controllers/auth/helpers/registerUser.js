@@ -11,7 +11,7 @@ const registerUser = (req = {}) => {
     const user = new User({
       name: req.name,
       email: req.email,
-      password: req.password,
+      walletAddress: req.walletAddress,
       verification: uuid.v4()
     })
     user.save((err, item) => {
