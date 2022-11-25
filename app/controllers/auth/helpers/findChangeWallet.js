@@ -1,13 +1,13 @@
-const ForgotPassword = require('../../../models/forgotPassword')
+const ChangeWallet = require('../../../models/changeWallet')
 const { itemNotFound } = require('../../../middleware/utils')
 
 /**
  * Checks if a forgot password verification exists
  * @param {string} id - verification id
  */
-const findForgotPassword = (id = '') => {
+const findChangeWallet = (id = '') => {
   return new Promise((resolve, reject) => {
-    ForgotPassword.findOne(
+    ChangeWallet.findOne(
       {
         verification: id,
         used: false
@@ -24,4 +24,4 @@ const findForgotPassword = (id = '') => {
   })
 }
 
-module.exports = { findForgotPassword }
+module.exports = { findChangeWallet }

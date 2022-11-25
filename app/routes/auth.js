@@ -10,8 +10,8 @@ const trimRequest = require('trim-request')
 const {
   register,
   verify,
-  forgotPassword,
-  resetPassword,
+  changeWallet,
+  resetWallet,
   getRefreshToken,
   login,
   roleAuthorization
@@ -20,9 +20,9 @@ const {
 const {
   validateRegister,
   validateVerify,
-  validateForgotPassword,
-  validateResetPassword,
-  validateLogin
+  validateResetWallet,
+  validateLogin,
+  validateChangeWallet
 } = require('../controllers/auth/validators')
 
 /*
@@ -42,12 +42,12 @@ router.post('/verify', trimRequest.all, validateVerify, verify)
 /*
  * Forgot password route
  */
-router.post('/forgot', trimRequest.all, validateForgotPassword, forgotPassword)
+router.post('/change', trimRequest.all, validateChangeWallet, changeWallet)
 
 /*
  * Reset password route
  */
-router.post('/reset', trimRequest.all, validateResetPassword, resetPassword)
+router.post('/reset', trimRequest.all, validateResetWallet, resetWallet)
 
 /*
  * Get new refresh token

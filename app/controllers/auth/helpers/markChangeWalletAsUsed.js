@@ -11,7 +11,7 @@ const {
  * @param {Object} req - request object
  * @param {Object} forgot - forgot object
  */
-const markResetPasswordAsUsed = (req = {}, forgot = {}) => {
+const markChangeWalletAsUsed = (req = {}, forgot = {}) => {
   return new Promise((resolve, reject) => {
     forgot.used = true
     forgot.ipChanged = getIP(req)
@@ -20,7 +20,7 @@ const markResetPasswordAsUsed = (req = {}, forgot = {}) => {
     forgot.save(async (err, item) => {
       try {
         await itemNotFound(err, item, 'NOT_FOUND')
-        resolve(buildSuccObject('PASSWORD_CHANGED'))
+        resolve(buildSuccObject('WALLET_CHANGED'))
       } catch (error) {
         reject(error)
       }
@@ -28,4 +28,4 @@ const markResetPasswordAsUsed = (req = {}, forgot = {}) => {
   })
 }
 
-module.exports = { markResetPasswordAsUsed }
+module.exports = { markChangeWalletAsUsed }

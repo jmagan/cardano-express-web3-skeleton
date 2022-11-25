@@ -7,7 +7,7 @@ const LOGIN_ATTEMPTS = 5
  * Adds one attempt to loginAttempts, then compares loginAttempts with the constant LOGIN_ATTEMPTS, if is less returns wrong password, else returns blockUser function
  * @param {Object} user - user object
  */
-const passwordsDoNotMatch = async (user = {}) => {
+const signatureIsInvalid = async (user = {}) => {
   return new Promise(async (resolve, reject) => {
     try {
       user.loginAttempts += 1
@@ -23,4 +23,4 @@ const passwordsDoNotMatch = async (user = {}) => {
   })
 }
 
-module.exports = { passwordsDoNotMatch }
+module.exports = { signatureIsInvalid }

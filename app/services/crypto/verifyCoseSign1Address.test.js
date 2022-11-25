@@ -1,28 +1,85 @@
 const { verifyCoseSign1Address } = require('./verifyCoseSign1Address.js')
+const {
+  createFakePrivateKey
+} = require('../../../test/helpers/auth/createFakePrivateKey.js')
+const {
+  createRewardAddress
+} = require('../../../test/helpers/auth/createRewardAddress.js')
+const {
+  createCOSESign1Signature
+} = require('../../../test/helpers/auth/createCOSESign1Signature.js')
+const { createCOSEKey } = require('../../../test/helpers/auth/createCOSEKey.js')
 
-const validKey =
-  'a40101032720062158201f58b408264f9f3e597af3a7e9775ef6bb34698e789abc20694c7e39e1152adc'
-const validSignature =
-  '84582aa201276761646472657373581de02f2a934b95726f848ec9f4ac81d8c7db5f33ad8f764b4b19d4ed0359a166686173686564f458377b22686f7374223a22484f5354222c22616374696f6e223a225369676e207570222c226e616d65223a22222c22656d61696c223a22227d58400b616a4e0290db786abb66f1afebb6dfe0ce4850431f2502aa91d20723f216b297e45a11f5cb37baaef0426cc5745baecb9bb04b6af3ce7f0413095bb5de8107'
+const stakePrivateKey1 = createFakePrivateKey(11)
 
-const invalidKey =
-  'a40101032720062158201f58b408264f9f3e597af3a7e9775ef6bb34698e789abc20694c7e39e115aaaa'
-const invalidSignature =
-  '84582AA201276761646472657373581DE02F2A934B95726F848EC9F4AC81D8C7DB5F33AD8F764B4B19D4ED0AAAA166686173686564F458377B22686F7374223A22484F5354222C22616374696F6E223A225369676E207570222C226E616D65223A22222C22656D61696C223A22227D58400B616A4E0290DB786ABB66F1AFEBB6DFE0CE4850431F2502AA91D20723F216B297E45A11F5CB37BAAEF0426CC5745BAECB9BB04B6AF3CE7F0413095BB5DE8107'
+const stakeAddress1 = createRewardAddress(stakePrivateKey1)
+
+const stakePrivateKey2 = createFakePrivateKey(12)
+
+const stakeAddress2 = createRewardAddress(stakePrivateKey2)
 
 describe('verifyCoseSign1Address()', () => {
   it('Should verify a correct signature', async () => {
-    const result = await verifyCoseSign1Address(validKey, validSignature)
+    const coseSign1 = createCOSESign1Signature(
+      { host: 'host' },
+      stakeAddress1,
+      stakePrivateKey1
+    )
+    const coseKey = createCOSEKey(stakePrivateKey1)
+
+    const result = await verifyCoseSign1Address(
+      Buffer.from(coseKey.to_bytes()).toString('hex'),
+      Buffer.from(coseSign1.to_bytes()).toString('hex'),
+      stakeAddress1.to_address().to_bech32()
+    )
     expect(result).toBe(true)
   })
 
+  it('Should not verify a correct signature and incorrect address', async () => {
+    const coseSign1 = createCOSESign1Signature(
+      { host: 'host' },
+      stakeAddress1,
+      stakePrivateKey1
+    )
+    const coseKey = createCOSEKey(stakePrivateKey1)
+
+    const result = await verifyCoseSign1Address(
+      Buffer.from(coseKey.to_bytes()).toString('hex'),
+      Buffer.from(coseSign1.to_bytes()).toString('hex'),
+      stakeAddress2.to_address().to_bech32()
+    )
+    expect(result).toBe(false)
+  })
+
   it('Should not verify a incorrect key', async () => {
-    const result = await verifyCoseSign1Address(invalidKey, validSignature)
+    const coseSign1 = createCOSESign1Signature(
+      { host: 'host' },
+      stakeAddress1,
+      stakePrivateKey1
+    )
+    const coseKey = createCOSEKey(stakePrivateKey2)
+
+    const result = await verifyCoseSign1Address(
+      Buffer.from(coseKey.to_bytes()).toString('hex'),
+      Buffer.from(coseSign1.to_bytes()).toString('hex'),
+      stakeAddress1.to_address().to_bech32()
+    )
     expect(result).toBe(false)
   })
 
   it('Should not verify a incorrect tampered signature', async () => {
-    const result = await verifyCoseSign1Address(validKey, invalidSignature)
+    const coseSign1 = createCOSESign1Signature(
+      { host: 'host' },
+      stakeAddress2,
+      stakePrivateKey1
+    )
+    const coseKey = createCOSEKey(stakePrivateKey1)
+
+    const result = await verifyCoseSign1Address(
+      Buffer.from(coseKey.to_bytes()).toString('hex'),
+      Buffer.from(coseSign1.to_bytes()).toString('hex'),
+      stakeAddress1.to_address().to_bech32()
+    )
     expect(result).toBe(false)
   })
 })

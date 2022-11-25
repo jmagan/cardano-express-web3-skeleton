@@ -2,7 +2,7 @@ const CSL = require('@emurgo/cardano-serialization-lib-nodejs')
 const MSG = require('@emurgo/cardano-message-signing-nodejs')
 const { buildErrObject } = require('../../middleware/utils')
 
-const verifyCoseSign1Address = (key, signature) => {
+const verifyCoseSign1Address = (key, signature, bech32Address) => {
   return new Promise((resolve, reject) => {
     try {
       const coseSignature = MSG.COSESign1.from_bytes(
@@ -33,7 +33,10 @@ const verifyCoseSign1Address = (key, signature) => {
       const signatureKeyHash = address.payment_cred().to_keyhash().to_hex()
       const publicKeyHash = publicKey.hash().to_hex()
 
-      resolve(signatureKeyHash === publicKeyHash)
+      resolve(
+        signatureKeyHash === publicKeyHash &&
+          address.to_address().to_bech32() === bech32Address
+      )
     } catch (err) {
       return reject(buildErrObject(422, err.message))
     }

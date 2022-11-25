@@ -4,24 +4,24 @@ const {
   checkLoginAttemptsAndBlockExpires
 } = require('./checkLoginAttemptsAndBlockExpires')
 const { checkPermissions } = require('./checkPermissions')
-const { findForgotPassword } = require('./findForgotPassword')
+const { findChangeWallet } = require('./findChangeWallet')
 const { findUser } = require('./findUser')
 const { findUserById } = require('./findUserById')
-const { findUserToResetPassword } = require('./findUserToResetPassword')
-const { forgotPasswordResponse } = require('./forgotPasswordResponse')
+const { findUserToResetWallet } = require('./findUserToResetWallet')
+const { changeWalletResponse } = require('./changeWalletResponse')
 const { generateToken } = require('./generateToken')
 const { getUserIdFromToken } = require('./getUserIdFromToken')
-const { markResetPasswordAsUsed } = require('./markResetPasswordAsUsed')
-const { passwordsDoNotMatch } = require('./passwordsDoNotMatch')
+const { markChangeWalletAsUsed } = require('./markChangeWalletAsUsed')
+const { signatureIsInvalid } = require('./signatureIsInvalid')
 const { registerUser } = require('./registerUser')
 const { returnRegisterToken } = require('./returnRegisterToken')
-const { saveForgotPassword } = require('./saveForgotPassword')
+const { saveChangeWallet } = require('./saveChangeWallet')
 const { saveLoginAttemptsToDB } = require('./saveLoginAttemptsToDB')
 const {
   saveUserAccessAndReturnToken
 } = require('./saveUserAccessAndReturnToken')
 const { setUserInfo } = require('./setUserInfo')
-const { updatePassword } = require('./updatePassword')
+const { updateWallet } = require('./updateWallet')
 const { userIsBlocked } = require('./userIsBlocked')
 const { verificationExists } = require('./verificationExists')
 const { verifyUser } = require('./verifyUser')
@@ -31,22 +31,22 @@ module.exports = {
   blockUser,
   checkLoginAttemptsAndBlockExpires,
   checkPermissions,
-  findForgotPassword,
+  findChangeWallet,
   findUser,
   findUserById,
-  findUserToResetPassword,
-  forgotPasswordResponse,
+  findUserToResetWallet,
+  changeWalletResponse,
   generateToken,
   getUserIdFromToken,
-  markResetPasswordAsUsed,
-  passwordsDoNotMatch,
+  markChangeWalletAsUsed,
+  signatureIsInvalid,
   registerUser,
   returnRegisterToken,
-  saveForgotPassword,
+  saveChangeWallet,
   saveLoginAttemptsToDB,
   saveUserAccessAndReturnToken,
   setUserInfo,
-  updatePassword,
+  updateWallet,
   userIsBlocked,
   verificationExists,
   verifyUser

@@ -6,11 +6,11 @@ const { prepareToSendEmail } = require('./prepareToSendEmail')
  * @param {string} locale - locale
  * @param {Object} user - user object
  */
-const sendResetPasswordEmailMessage = (locale = '', user = {}) => {
+const sendChangeWalletEmailMessage = (locale = '', user = {}) => {
   i18n.setLocale(locale)
-  const subject = i18n.__('forgotPassword.SUBJECT')
+  const subject = i18n.__('changeWallet.SUBJECT')
   const htmlMessage = i18n.__(
-    'forgotPassword.MESSAGE',
+    'changeWallet.MESSAGE',
     user.email,
     process.env.FRONTEND_URL,
     user.verification
@@ -18,4 +18,4 @@ const sendResetPasswordEmailMessage = (locale = '', user = {}) => {
   prepareToSendEmail(user, subject, htmlMessage)
 }
 
-module.exports = { sendResetPasswordEmailMessage }
+module.exports = { sendChangeWalletEmailMessage }

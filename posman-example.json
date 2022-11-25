@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b82598d1-5f65-4310-bf0e-ba31414862b1",
+		"_postman_id": "eddf33bd-8e58-46ed-8282-c563db66922a",
 		"name": "api node mongo jwt",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11365590"
 	},
 	"item": [
 		{
@@ -40,8 +41,18 @@
 									"type": "text"
 								},
 								{
-									"key": "password",
-									"value": "12345",
+									"key": "walletAddress",
+									"value": "stake1u9uukcfu8j3nu42p8swz7xhk6uwd5fsw4hyx6uvhscq8s7sjryw72",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"value": "a2010121582020828bf5c5bdcacb684863336c202fb5599da48be5596615742170705beca9f7",
+									"type": "text"
+								},
+								{
+									"key": "signature",
+									"value": "845828a16761646472657373581de179cb613c3ca33e55413c1c2f1af6d71cda260eadc86d71978600787aa166686173686564f4584a7b22686f7374223a22484f5354222c22616374696f6e223a225369676e207570222c226e616d65223a224d79204e616d65222c22656d61696c223a226d7940656d61696c2e636f6d227d584018733fa9f6cfd77d0c3db395099733dcdab7c622e8e6eea3f7f2ff25e95d707871961ba7b5f3798f49df041996055ba74c9f92472538cd4f48bafa3a0fac780a",
 									"type": "text"
 								}
 							]
@@ -76,7 +87,7 @@
 							"urlencoded": [
 								{
 									"key": "id",
-									"value": "b98b1dea-b3f4-4b72-bcdf-9d36607e2603",
+									"value": "d104b002-17ba-4806-969b-6833555facba",
 									"type": "text"
 								}
 							]
@@ -94,7 +105,7 @@
 					"response": []
 				},
 				{
-					"name": "/forgot",
+					"name": "/change",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -122,12 +133,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{server}}/forgot",
+							"raw": "{{server}}/change",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
-								"forgot"
+								"change"
 							]
 						}
 					},
@@ -151,12 +162,22 @@
 							"urlencoded": [
 								{
 									"key": "id",
-									"value": "f5b08991-02fc-4f3d-9a32-6d703bef5c57",
+									"value": "cdeae252-3800-4ae2-a830-12f6f3ce19b8",
 									"type": "text"
 								},
 								{
-									"key": "password",
-									"value": "12345",
+									"key": "walletAddress",
+									"value": "stake1u89exkzjnh6898pjg632qv7tnqs6h073dhjg3qq9jp9tcsgq0wfzr",
+									"type": "text"
+								},
+								{
+									"key": "key",
+									"value": "a201012158203b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29",
+									"type": "text"
+								},
+								{
+									"key": "signature",
+									"value": "845828a16761646472657373581de1cb9358529df4729c3246a2a033cb9821abbfd16de4888005904abc41a166686173686564f458207b22686f7374223a22484f5354222c22616374696f6e223a225265736574227d5840b716e97d221608d649738276c3f3591553180870deb11bbb173bb468838dc6c62a3ee34a5ab383c511c7454c261dc4ddaa7f2a2287ed02a3f7d3a455a8a52f0a",
 									"type": "text"
 								}
 							]
@@ -179,7 +200,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "76965795-61c0-4767-8b82-8dc56635b784",
 								"exec": [
 									"//- auto populates token to environment variables",
 									"pm.test(\"Token returned from login, added to environment.\", function () {",
@@ -212,8 +232,13 @@
 									"type": "text"
 								},
 								{
-									"key": "password",
-									"value": "12345",
+									"key": "key",
+									"value": "a201012158203b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29",
+									"type": "text"
+								},
+								{
+									"key": "signature",
+									"value": "845828a16761646472657373581de1cb9358529df4729c3246a2a033cb9821abbfd16de4888005904abc41a166686173686564f4583a7b22686f7374223a22484f5354222c22616374696f6e223a224c6f67696e222c22656d61696c223a2261646d696e4061646d696e2e636f6d227d5840f93faf1473ad7ff9cdcbc4e2acbb4c24e90329c2ee77b04a8fcc8a716e04df9ae4094fb86f1ff3a88c85e892bf166d1b03bcf5c98cb821be40c285d9fea3e804",
 									"type": "text"
 								}
 							]
@@ -333,8 +358,8 @@
 									"type": "text"
 								},
 								{
-									"key": "password",
-									"value": "12345",
+									"key": "walletAddress",
+									"value": "stake1u80qxm73qm3t982h5sqt0ltnjyd2nykfsvfuxv3ywq3uy5g2weg6w",
 									"type": "text"
 								},
 								{
@@ -386,13 +411,13 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{server}}/users/5aab2443ef417d2d19e6c8f2",
+							"raw": "{{server}}/users/6380c0306c6d124a1dff35db\n",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"users",
-								"5aab2443ef417d2d19e6c8f2"
+								"6380c0306c6d124a1dff35db\n"
 							]
 						}
 					},
@@ -409,13 +434,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{server}}/users/5aa1c2c35ef7a4e97b5e995a",
+							"raw": "{{server}}/users/6380c04d6c6d124a1dff35e3",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"users",
-								"5aa1c2c35ef7a4e97b5e995a"
+								"6380c04d6c6d124a1dff35e3"
 							]
 						}
 					},
@@ -471,7 +496,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/users/5aa1c2c35ef7a4e97b5e995a?",
+							"raw": "http://localhost:3000/users/6380c04d6c6d124a1dff35e3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -479,7 +504,7 @@
 							"port": "3000",
 							"path": [
 								"users",
-								"5aa1c2c35ef7a4e97b5e995a"
+								"6380c04d6c6d124a1dff35e3"
 							],
 							"query": [
 								{
@@ -585,48 +610,6 @@
 							],
 							"path": [
 								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/profile/changePassword",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "oldPassword",
-									"value": "12345",
-									"type": "text"
-								},
-								{
-									"key": "newPassword",
-									"value": "12345",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{server}}/profile/changePassword",
-							"host": [
-								"{{server}}"
-							],
-							"path": [
-								"profile",
-								"changePassword"
 							]
 						}
 					},
@@ -760,13 +743,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{server}}/cities/5bd08db979bbc504c14ebfdd",
+							"raw": "{{server}}/cities/6380c0d16c6d124a1dff35fd",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"cities",
-								"5bd08db979bbc504c14ebfdd"
+								"6380c0d16c6d124a1dff35fd"
 							]
 						}
 					},
@@ -797,13 +780,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{server}}/cities/5bd08db979bbc504c14ebfdd?",
+							"raw": "{{server}}/cities/6380c0d16c6d124a1dff35fd",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"cities",
-								"5bd08db979bbc504c14ebfdd"
+								"6380c0d16c6d124a1dff35fd"
 							],
 							"query": [
 								{
@@ -841,13 +824,13 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{server}}/cities/5b38171b1843d58427c5d6c4",
+							"raw": "{{server}}/cities/6380c0d16c6d124a1dff35fd",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"cities",
-								"5b38171b1843d58427c5d6c4"
+								"6380c0d16c6d124a1dff35fd"
 							]
 						}
 					},

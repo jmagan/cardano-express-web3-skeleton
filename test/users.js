@@ -7,19 +7,13 @@ const faker = require('faker')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../server')
+const { getAdminLoginDetails, getUserLoginDetails } = require('./helpers/auth')
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
+const host = 'HOST'
 const loginDetails = {
-  admin: {
-    id: '5aa1c2c35ef7a4e97b5e995a',
-    email: 'admin@admin.com',
-    password: '12345'
-  },
-  user: {
-    id: '5aa1c2c35ef7a4e97b5e995b',
-    email: 'user@user.com',
-    password: '12345'
-  }
+  admin: getAdminLoginDetails(host),
+  user: getUserLoginDetails(host)
 }
 const tokens = {
   admin: '',
@@ -116,7 +110,7 @@ describe('*********** USERS ***********', () => {
       const user = {
         name: faker.random.words(),
         email,
-        password: faker.random.words(),
+        walletAddress: faker.random.words(),
         role: 'admin',
         urlTwitter: faker.internet.url(),
         urlGitHub: faker.internet.url(),
@@ -265,8 +259,8 @@ describe('*********** USERS ***********', () => {
     it('it should DELETE a user given the id', (done) => {
       const user = {
         name: faker.random.words(),
-        email: faker.internet.email(),
-        password: faker.random.words(),
+        email,
+        walletAddress: faker.random.words(),
         role: 'admin',
         urlTwitter: faker.internet.url(),
         urlGitHub: faker.internet.url(),

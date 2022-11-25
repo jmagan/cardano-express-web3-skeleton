@@ -90,6 +90,7 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@types/faker": "^5.5.3",
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "cross-env": "^7.0.3",

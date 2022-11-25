@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-const ForgotPassword = require('../../../models/forgotPassword')
+const ChangeWallet = require('../../../models/changeWallet')
 const {
   getIP,
   getBrowserInfo,
@@ -11,9 +11,9 @@ const {
  * Creates a new password forgot
  * @param {Object} req - request object
  */
-const saveForgotPassword = (req = {}) => {
+const saveChangeWallet = (req = {}) => {
   return new Promise((resolve, reject) => {
-    const forgot = new ForgotPassword({
+    const forgot = new ChangeWallet({
       email: req.body.email,
       verification: uuid.v4(),
       ipRequest: getIP(req),
@@ -29,4 +29,4 @@ const saveForgotPassword = (req = {}) => {
   })
 }
 
-module.exports = { saveForgotPassword }
+module.exports = { saveChangeWallet }

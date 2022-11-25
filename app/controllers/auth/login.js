@@ -4,13 +4,13 @@ const {
   findUser,
   userIsBlocked,
   checkLoginAttemptsAndBlockExpires,
-  passwordsDoNotMatch,
+  signatureIsInvalid,
   saveLoginAttemptsToDB,
   saveUserAccessAndReturnToken
 } = require('./helpers')
 
 const { handleError } = require('../../middleware/utils')
-const { checkPassword } = require('../../middleware/auth')
+const { checkSignature } = require('../../middleware/auth')
 
 /**
  * Login function called by route
@@ -23,9 +23,13 @@ const login = async (req, res) => {
     const user = await findUser(data.email)
     await userIsBlocked(user)
     await checkLoginAttemptsAndBlockExpires(user)
-    const isPasswordMatch = await checkPassword(data.password, user)
-    if (!isPasswordMatch) {
-      handleError(res, await passwordsDoNotMatch(user))
+    const isSignatureChecked = await checkSignature(
+      data.key,
+      data.signature,
+      user
+    )
+    if (!isSignatureChecked) {
+      handleError(res, await signatureIsInvalid(user))
     } else {
       // all ok, register access and return token
       user.loginAttempts = 0

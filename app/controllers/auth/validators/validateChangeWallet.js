@@ -2,9 +2,9 @@ const { validateResult } = require('../../../middleware/utils')
 const { check } = require('express-validator')
 
 /**
- * Validates forgot password request
+ * Validates change wallet request
  */
-const validateForgotPassword = [
+const validateChangeWallet = [
   check('email')
     .exists()
     .withMessage('MISSING')
@@ -18,4 +18,4 @@ const validateForgotPassword = [
   }
 ]
 
-module.exports = { validateForgotPassword }
+module.exports = { validateChangeWallet }

@@ -1,13 +1,13 @@
 const { itemNotFound } = require('../../../middleware/utils')
 
 /**
- * Updates a user password in database
- * @param {string} password - new password
+ * Updates a user wallet address in database
+ * @param {string} walletAddress - new wallet address
  * @param {Object} user - user object
  */
-const updatePassword = (password = '', user = {}) => {
+const updateWallet = (walletAddress = '', user = {}) => {
   return new Promise((resolve, reject) => {
-    user.password = password
+    user.walletAddress = walletAddress
     user.save(async (err, item) => {
       try {
         await itemNotFound(err, item, 'NOT_FOUND')
@@ -19,4 +19,4 @@ const updatePassword = (password = '', user = {}) => {
   })
 }
 
-module.exports = { updatePassword }
+module.exports = { updateWallet }

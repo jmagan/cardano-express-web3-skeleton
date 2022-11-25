@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 
-const ForgotPasswordSchema = new mongoose.Schema(
+const ChangeWalletSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -43,4 +43,4 @@ const ForgotPasswordSchema = new mongoose.Schema(
     timestamps: true
   }
 )
-module.exports = mongoose.model('ForgotPassword', ForgotPasswordSchema)
+module.exports = mongoose.model('ChangeWallet', ChangeWalletSchema)

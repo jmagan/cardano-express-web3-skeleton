@@ -9,16 +9,9 @@ const trimRequest = require('trim-request')
 
 const { roleAuthorization } = require('../controllers/auth')
 
-const {
-  getProfile,
-  updateProfile,
-  changePassword
-} = require('../controllers/profile')
+const { getProfile, updateProfile } = require('../controllers/profile')
 
-const {
-  validateUpdateProfile,
-  validateChangePassword
-} = require('../controllers/profile/validators')
+const { validateUpdateProfile } = require('../controllers/profile/validators')
 
 /*
  * Profile routes
@@ -45,18 +38,6 @@ router.patch(
   trimRequest.all,
   validateUpdateProfile,
   updateProfile
-)
-
-/*
- * Change password route
- */
-router.post(
-  '/changePassword',
-  requireAuth,
-  roleAuthorization(['user', 'admin']),
-  trimRequest.all,
-  validateChangePassword,
-  changePassword
 )
 
 module.exports = router

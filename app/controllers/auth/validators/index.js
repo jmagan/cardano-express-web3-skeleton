@@ -1,13 +1,13 @@
-const { validateForgotPassword } = require('./validateForgotPassword')
+const { validateChangeWallet } = require('./validateChangeWallet')
 const { validateLogin } = require('./validateLogin')
 const { validateRegister } = require('./validateRegister')
-const { validateResetPassword } = require('./validateResetPassword')
+const { validateResetWallet } = require('./validateResetWallet')
 const { validateVerify } = require('./validateVerify')
 
 module.exports = {
-  validateForgotPassword,
+  validateChangeWallet,
   validateLogin,
   validateRegister,
-  validateResetPassword,
+  validateResetWallet,
   validateVerify
 }
