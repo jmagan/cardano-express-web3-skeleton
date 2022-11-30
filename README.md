@@ -153,7 +153,6 @@ npm run lint
 
 Once everything is set up to test API routes either use Postman or any other api testing application.
 
-
 ### Postman API example collection
 
 You can import the example collection to Postman. To import, click the import button located and select `postman-example.json` located within the root directory.
