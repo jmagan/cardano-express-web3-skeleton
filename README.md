@@ -12,8 +12,6 @@ This is a basic API REST skeleton for Cardano dApp authentication and authorizat
 
 The authentication process is driven by signed payloads with the [CIP-0030 Cardano dApp-Wallet Web Bridge](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030). There are three actions, which require the wallet signature, *Signup*, *Login* and *Reset*. Once the payload with the desired action is signed with the correct private key, a jwt web token is issued and takes control of the session.
 
-## Next steps
-
 ## Features\*
 
 *   Cardano [CIP-0008 Signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md) for the login and registration process.
