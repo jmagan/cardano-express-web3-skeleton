@@ -50,7 +50,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run remark",
-      "pre-push": "true || npm run test || true"
+      "pre-push": "npm run test || true"
     }
   },
   "lint-staged": {
