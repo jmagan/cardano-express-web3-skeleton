@@ -1,10 +1,6 @@
 # Node.js express.js MongoDB JWT REST API - Basic Project Skeleton
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/blob/master/LICENSE)
-[![Tag](https://img.shields.io/github/tag/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square)](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/tags)
-[![Travis](https://img.shields.io/travis/com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square)]()
-[![npm downloads](https://img.shields.io/npm/dt/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square\&label=npm%20downloads)]()
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb6f20533c0f41b6b00da95ba634cd5e)](https://www.codacy.com/app/davellanedam/node-express-mongodb-jwt-rest-api-skeleton?utm_source=github.com\&utm_medium=referral\&utm_content=davellanedam/node-express-mongodb-jwt-rest-api-skeleton\&utm_campaign=Badge_Grade)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/jmagan/cardano-express-web3-skeleton/blob/master/LICENSE)
 
 ## Getting started
 
@@ -52,7 +48,7 @@ The authentication process is driven by signed payloads with the [CIP-0030 Carda
 1.  Clone the project from github. Change "myproject" to your project name.
 
 ```bash
-git clone https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.git ./myproject
+git clone https://github.com/jmagan/cardano-express-web3-skeleton.git ./myproject
 ```
 
 ### Using manual download ZIP
@@ -155,11 +151,8 @@ npm run lint
 
 ## Usage
 
-Once everything is set up to test API routes either use Postman or any other api testing application. Default username/password combination for login is `admin@admin.com/12345`.
+Once everything is set up to test API routes either use Postman or any other api testing application.
 
-### API documentation
-
-<https://documenter.getpostman.com/view/487539/RWaHwoLV>
 
 ### Postman API example collection
 
@@ -198,7 +191,7 @@ This project is started by Daniel Avellaneda. He's prepared a well-thought full 
 
 ## Bugs or improvements
 
-Feel free to report any bugs or improvements. Pull requests are always welcome.
+You are welcome to report any bugs or improvements. Pull requests are always welcome.
 
 ## License
 
