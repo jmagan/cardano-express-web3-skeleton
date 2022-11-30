@@ -11,7 +11,7 @@ const findUser = (email = '') => {
       {
         email
       },
-      'password loginAttempts blockExpires name email role verified verification',
+      'password loginAttempts blockExpires name email role verified verification walletAddress',
       async (err, item) => {
         try {
           await itemNotFound(err, item, 'USER_DOES_NOT_EXIST')

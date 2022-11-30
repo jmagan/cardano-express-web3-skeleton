@@ -1,17 +1,17 @@
-const { forgotPassword } = require('./forgotPassword')
+const { changeWallet } = require('./changeWallet')
 const { getRefreshToken } = require('./getRefreshToken')
 const { login } = require('./login')
 const { register } = require('./register')
-const { resetPassword } = require('./resetPassword')
+const { resetWallet } = require('./resetWallet')
 const { roleAuthorization } = require('./roleAuthorization')
 const { verify } = require('./verify')
 
 module.exports = {
-  forgotPassword,
+  changeWallet,
   getRefreshToken,
   login,
   register,
-  resetPassword,
+  resetWallet,
   roleAuthorization,
   verify
 }

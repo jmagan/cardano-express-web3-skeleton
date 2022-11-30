@@ -5,7 +5,7 @@ const { itemNotFound } = require('../../../middleware/utils')
  * Finds user by email to reset password
  * @param {string} email - user email
  */
-const findUserToResetPassword = (email = '') => {
+const findUserToResetWallet = (email = '') => {
   return new Promise((resolve, reject) => {
     User.findOne(
       {
@@ -23,4 +23,4 @@ const findUserToResetPassword = (email = '') => {
   })
 }
 
-module.exports = { findUserToResetPassword }
+module.exports = { findUserToResetWallet }

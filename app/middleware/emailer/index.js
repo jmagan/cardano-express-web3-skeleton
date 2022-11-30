@@ -6,8 +6,8 @@ const {
   sendRegistrationEmailMessage
 } = require('./sendRegistrationEmailMessage')
 const {
-  sendResetPasswordEmailMessage
-} = require('./sendResetPasswordEmailMessage')
+  sendChangeWalletEmailMessage
+} = require('./sendChangeWalletEmailMessage')
 
 module.exports = {
   emailExists,
@@ -15,5 +15,5 @@ module.exports = {
   prepareToSendEmail,
   sendEmail,
   sendRegistrationEmailMessage,
-  sendResetPasswordEmailMessage
+  sendChangeWalletEmailMessage
 }

@@ -1,38 +1,18 @@
 # Node.js express.js MongoDB JWT REST API - Basic Project Skeleton
 
-[![Author](http://img.shields.io/badge/author-@davellanedam-blue.svg?style=flat-square)](https://twitter.com/davellanedam)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/blob/master/LICENSE)
-[![Tag](https://img.shields.io/github/tag/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square)](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/tags)
-[![Travis](https://img.shields.io/travis/com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square)]()
-[![npm downloads](https://img.shields.io/npm/dt/node-express-mongodb-jwt-rest-api-skeleton.svg?style=flat-square\&label=npm%20downloads)]()
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb6f20533c0f41b6b00da95ba634cd5e)](https://www.codacy.com/app/davellanedam/node-express-mongodb-jwt-rest-api-skeleton?utm_source=github.com\&utm_medium=referral\&utm_content=davellanedam/node-express-mongodb-jwt-rest-api-skeleton\&utm_campaign=Badge_Grade)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/jmagan/cardano-express-web3-skeleton/blob/master/LICENSE)
 
 ## Getting started
 
-This is a basic API REST skeleton written on JavaScript using async/await. Great for building a starter web API for your front-end (Android, iOS, Vue, react, angular, or anything that can consume an API)
+This is a basic API REST skeleton for Cardano dApp authentication and authorization written on JavaScript using async/await. This backend utilizes the standard [CIP-0008 Signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md). The project has all necessary endpoints for athentication, authorization and user management. The authentication token is generated as a jwt web token, therefore it can be shared easily by other services.
 
-This project is created to help other developers create a **basic REST API in an easy way with Node.js**. This basic example shows how powerful and simple JavaScript can be. Do you want to contribute? Pull requests are always welcome to show more features.
+The authentication process is driven by signed payloads with the [CIP-0030 Cardano dApp-Wallet Web Bridge](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030). There are three actions, which require the wallet signature, *Signup*, *Login* and *Reset*. Once the payload with the desired action is signed with the correct private key, a jwt web token is issued and takes control of the session.
 
-## Buy me a coffee
+## Features\*
 
-Hi! I'm Daniel Avellaneda, I'm an open source enthusiast and devote my free time to building projects in this field.
-
-I'm the creator and maintainer of [node-express-mongodb-jwt-rest-api-skeleton](https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton/blob/master/README.md) and [vue-skeleton-mvp](https://github.com/davellanedam/vue-skeleton-mvp/blob/master/README.md)
-
-These projects are a "starter web app kit" for any developer who wants to build their own app without starting from scratch: API + Frontend
-
-Both projects have been downloaded thousands of times by web developers around the world.
-
-I'm doing my best to provide you a good experience when using my apps, so if you like what I'm doing and wish to say "thanks!", please buy me a coffee :coffee:
-
-<a href="https://www.buymeacoffee.com/muGHf41NT" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-
-Feel free to send me a tweet <https://twitter.com/davellanedam>, share this with others or make a pull request
-
-## Features
-
+*   Cardano [CIP-0008 Signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md) for the login and registration process.
 *   Multiple environment ready (development, production)
-*   Custom email/password user system with basic security and blocking for preventing brute force attacks.
+*   Custom email/cardano address user system with basic security and blocking for preventing brute force attacks.
 *   Compressed responses.
 *   Secured HTTP headers.
 *   CORS ready.
@@ -61,26 +41,6 @@ Feel free to send me a tweet <https://twitter.com/davellanedam>, share this with
 *   MongoDB **3.6+**
 *   Redis **5.0+**
 
-## Demo
-
-A demo of this API is located at: <https://api-demo.daniel-avellaneda.com>
-
-### Login credentials
-
-email: `admin@admin.com`\
-password: `12345`
-
-**IMPORTANT:** Database resets every 30 mins like "12:00am, 12:30am, 1:00am" and so on. So anything you do with the API will be lost after a short time.
-
-[API documentation](###api-documentation)\
-[Postman API example collection](###postman-api-example-collection)\
-If you want to test it don´t forget to change the server variable to:\
-`https://api-demo.daniel-avellaneda.com`
-
-Demo is also linked to a VueJS project that shows how this API can be integrated to a frontend that is able to consume an API.\
-Repo is here: <https://github.com/davellanedam/vue-skeleton-mvp>\
-Running demo is here: <https://vue-demo.daniel-avellaneda.com>
-
 ## How to install
 
 ### Using Git (recommended)
@@ -88,7 +48,7 @@ Running demo is here: <https://vue-demo.daniel-avellaneda.com>
 1.  Clone the project from github. Change "myproject" to your project name.
 
 ```bash
-git clone https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.git ./myproject
+git clone https://github.com/jmagan/cardano-express-web3-skeleton.git ./myproject
 ```
 
 ### Using manual download ZIP
@@ -191,11 +151,7 @@ npm run lint
 
 ## Usage
 
-Once everything is set up to test API routes either use Postman or any other api testing application. Default username/password combination for login is `admin@admin.com/12345`.
-
-### API documentation
-
-<https://documenter.getpostman.com/view/487539/RWaHwoLV>
+Once everything is set up to test API routes either use Postman or any other api testing application.
 
 ### Postman API example collection
 
@@ -226,9 +182,15 @@ If you need to add more routes to the project just create a new file in `/app/ro
 
 When you create a new controller, try to also create another folder with validations and helpers. Ex. `/countries`, `/countries/validators` and `/countries/helpers`. An example of this is included in the repository.
 
+## Credits
+
+This project is started by Daniel Avellaneda. He's prepared a well-thought full backend for authorization and authentication. I've taken advantage from this previous work. So feel free to thank Daniel buying him a coffee.
+
+<a href="https://www.buymeacoffee.com/muGHf41NT" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
 ## Bugs or improvements
 
-Feel free to report any bugs or improvements. Pull requests are always welcome.
+You are welcome to report any bugs or improvements. Pull requests are always welcome.
 
 ## License
 

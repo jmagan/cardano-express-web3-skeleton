@@ -7,26 +7,96 @@ const faker = require('faker')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../server')
+const {
+  createFakePrivateKey,
+  createRewardAddress,
+  createCOSEKey,
+  createCOSESign1Signature,
+  getAdminLoginDetails
+} = require('./helpers/auth')
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
-const loginDetails = {
-  email: 'admin@admin.com',
-  password: '12345'
+
+const host = 'HOST'
+
+const stakePrivateKey1 = createFakePrivateKey(10)
+const stakeAddress1 = createRewardAddress(stakePrivateKey1)
+
+const stakePrivateKey2 = createFakePrivateKey(11)
+
+const stakeAddress2 = createRewardAddress(stakePrivateKey2)
+
+const testName = `${faker.name.firstName()} ${faker.name.lastName()}`
+const testEmail = `${faker.internet.email()}`
+
+/**
+ *
+ * @param {String} name
+ * @param {String} email
+ * @param {CSL.RewardAddress} address
+ * @param {CSL.PrivateKey} privateKey
+ * @returns
+ */
+const createRegisterUserSignature = (name, email, address, privateKey) => {
+  const payload = {
+    host,
+    action: 'Sign up',
+    name,
+    email
+  }
+
+  return createCOSESign1Signature(payload, address, privateKey)
 }
+
+/**
+ *
+ * @param {String} name
+ * @param {String} email
+ * @param {CSL.RewardAddress} address
+ * @param {CSL.PrivateKey} PrivateKey
+ * @returns
+ */
+const createLoginUserSignature = (email, address, privateKey) => {
+  const payload = {
+    host,
+    action: 'Login',
+    email
+  }
+  return createCOSESign1Signature(payload, address, privateKey)
+}
+
+const loginDetails = getAdminLoginDetails(host)
 let token = ''
 const createdID = []
 let verification = ''
-let verificationForgot = ''
-const email = faker.internet.email()
+let verificationChange = ''
 const failedLoginAttempts = 5
 const badUser = {
   name: 'Bad user',
-  email: 'bad@user.com',
-  password: '54321'
+  email: 'bad@user.com'
 }
 const badLoginDetails = {
   email: 'bad@user.com',
-  password: '12345'
+  key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString('hex'),
+  signature: Buffer.from(
+    createLoginUserSignature(
+      'admin@admin.com',
+      stakeAddress2,
+      stakePrivateKey2
+    ).to_bytes()
+  ).toString('hex')
+}
+
+const badUserLoginDetails = {
+  email: 'bad@user.com',
+  key: Buffer.from(createCOSEKey(stakePrivateKey2).to_bytes()).toString('hex'),
+  signature: Buffer.from(
+    createLoginUserSignature(
+      'admin@admin.com',
+      stakeAddress2,
+      stakePrivateKey2
+    ).to_bytes()
+  ).toString('hex')
 }
 
 chai.use(chaiHttp)
@@ -74,11 +144,22 @@ describe('*********** AUTH ***********', () => {
   })
 
   describe('/POST register', () => {
-    it('it should POST register', (done) => {
+    it('it should POST register user 1', (done) => {
       const user = {
-        name: faker.random.words(),
-        email,
-        password: faker.random.words()
+        name: testName,
+        email: testEmail,
+        walletAddress: stakeAddress1.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+          'hex'
+        ),
+        signature: Buffer.from(
+          createRegisterUserSignature(
+            testName,
+            testEmail,
+            stakeAddress1,
+            stakePrivateKey1
+          ).to_bytes()
+        ).toString('hex')
       }
       chai
         .request(server)
@@ -95,9 +176,20 @@ describe('*********** AUTH ***********', () => {
     })
     it('it should NOT POST a register if email already exists', (done) => {
       const user = {
-        name: faker.random.words(),
-        email,
-        password: faker.random.words()
+        name: testName,
+        email: testEmail,
+        walletAddress: stakeAddress1.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+          'hex'
+        ),
+        signature: Buffer.from(
+          createRegisterUserSignature(
+            testName,
+            testEmail,
+            stakeAddress1,
+            stakePrivateKey1
+          ).to_bytes()
+        ).toString('hex')
       }
       chai
         .request(server)
@@ -106,7 +198,10 @@ describe('*********** AUTH ***********', () => {
         .end((err, res) => {
           res.should.have.status(422)
           res.body.should.be.a('object')
-          res.body.should.have.property('errors')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.should.have
+            .property('msg')
+            .eql('EMAIL_ALREADY_EXISTS')
           done()
         })
     })
@@ -130,19 +225,19 @@ describe('*********** AUTH ***********', () => {
     })
   })
 
-  describe('/POST forgot', () => {
-    it('it should POST forgot', (done) => {
+  describe('/POST change', () => {
+    it('it should POST change', (done) => {
       chai
         .request(server)
-        .post('/forgot')
+        .post('/change')
         .send({
-          email
+          email: testEmail
         })
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an('object')
           res.body.should.include.keys('msg', 'verification')
-          verificationForgot = res.body.verification
+          verificationChange = res.body.verification
           done()
         })
     })
@@ -150,17 +245,27 @@ describe('*********** AUTH ***********', () => {
 
   describe('/POST reset', () => {
     it('it should POST reset', (done) => {
+      const newPrivateKey = createFakePrivateKey(12)
+      const newAddress = createRewardAddress(newPrivateKey)
+      const newCoseKey = createCOSEKey(newPrivateKey)
+      const newCoseSign1 = createCOSESign1Signature(
+        { host, action: 'Reset' },
+        newAddress,
+        newPrivateKey
+      )
       chai
         .request(server)
         .post('/reset')
         .send({
-          id: verificationForgot,
-          password: '12345'
+          id: verificationChange,
+          walletAddress: newAddress.to_address().to_bech32(),
+          key: Buffer.from(newCoseKey.to_bytes()).toString('hex'),
+          signature: Buffer.from(newCoseSign1.to_bytes()).toString('hex')
         })
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.a('object')
-          res.body.should.have.property('msg').eql('PASSWORD_CHANGED')
+          res.body.should.have.property('msg').eql('WALLET_CHANGED')
           done()
         })
     })
@@ -191,11 +296,27 @@ describe('*********** AUTH ***********', () => {
   })
 
   describe('/POST register', () => {
-    it('it should POST register', (done) => {
+    it('it should POST register user 2', (done) => {
+      const user = {
+        name: badUser.name,
+        email: badUser.email,
+        walletAddress: stakeAddress2.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey2).to_bytes()).toString(
+          'hex'
+        ),
+        signature: Buffer.from(
+          createRegisterUserSignature(
+            badUser.name,
+            badUser.email,
+            stakeAddress2,
+            stakePrivateKey2
+          ).to_bytes()
+        ).toString('hex')
+      }
       chai
         .request(server)
         .post('/register')
-        .send(badUser)
+        .send(user)
         .end((err, res) => {
           res.should.have.status(201)
           res.body.should.be.an('object')
@@ -241,10 +362,7 @@ describe('*********** AUTH ***********', () => {
       chai
         .request(server)
         .post('/login')
-        .send({
-          email: badUser.email,
-          password: badUser.password
-        })
+        .send(badUserLoginDetails)
         .end((err, res) => {
           res.should.have.status(409)
           res.body.should.be.a('object')
@@ -254,7 +372,7 @@ describe('*********** AUTH ***********', () => {
         })
     })
   })
-  after(() => {
+  after((done) => {
     createdID.forEach((id) => {
       User.findByIdAndRemove(id, (err) => {
         if (err) {
@@ -262,5 +380,6 @@ describe('*********** AUTH ***********', () => {
         }
       })
     })
+    done()
   })
 })

@@ -9,7 +9,7 @@ const { buildErrObject } = require('../../../middleware/utils')
 const createItemInDb = ({
   name = '',
   email = '',
-  password = '',
+  walletAddress = '',
   role = '',
   phone = '',
   city = '',
@@ -19,7 +19,7 @@ const createItemInDb = ({
     const user = new User({
       name,
       email,
-      password,
+      walletAddress,
       role,
       phone,
       city,

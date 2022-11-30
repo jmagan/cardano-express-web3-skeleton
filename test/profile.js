@@ -5,12 +5,11 @@ process.env.NODE_ENV = 'test'
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../server')
+const { getAdminLoginDetails } = require('./helpers/auth')
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
-const loginDetails = {
-  email: 'admin@admin.com',
-  password: '12345'
-}
+const host = 'HOST'
+const loginDetails = getAdminLoginDetails(host)
 let token = ''
 
 chai.use(chaiHttp)
@@ -132,65 +131,6 @@ describe('*********** PROFILE ***********', () => {
           res.body.errors.msg[0].should.have
             .property('msg')
             .eql('NOT_A_VALID_URL')
-          done()
-        })
-    })
-  })
-  describe('/POST profile/changePassword', () => {
-    it('it should NOT change password', (done) => {
-      const data = {
-        oldPassword: '123456',
-        newPassword: '123456'
-      }
-      chai
-        .request(server)
-        .post('/profile/changePassword')
-        .set('Authorization', `Bearer ${token}`)
-        .send(data)
-        .end((err, res) => {
-          res.should.have.status(409)
-          res.body.should.be.a('object')
-          res.body.should.have
-            .property('errors')
-            .that.has.property('msg')
-            .eql('WRONG_PASSWORD')
-          done()
-        })
-    })
-    it('it should NOT change a too short password', (done) => {
-      const data = {
-        oldPassword: '1234',
-        newPassword: '1234'
-      }
-      chai
-        .request(server)
-        .post('/profile/changePassword')
-        .set('Authorization', `Bearer ${token}`)
-        .send(data)
-        .end((err, res) => {
-          res.should.have.status(422)
-          res.body.should.be.a('object')
-          res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.msg[0].should.have
-            .property('msg')
-            .eql('PASSWORD_TOO_SHORT_MIN_5')
-          done()
-        })
-    })
-    it('it should change password', (done) => {
-      const data = {
-        oldPassword: '12345',
-        newPassword: '12345'
-      }
-      chai
-        .request(server)
-        .post('/profile/changePassword')
-        .set('Authorization', `Bearer ${token}`)
-        .send(data)
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.body.should.be.a('object')
-          res.body.should.have.property('msg').eql('PASSWORD_CHANGED')
           done()
         })
     })
