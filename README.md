@@ -14,9 +14,7 @@ The authentication process is driven by signed payloads with the [CIP-0030 Carda
 
 ## Next steps
 
-
-
-## Features*
+## Features\*
 
 *   Cardano [CIP-0008 Signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md) for the login and registration process.
 *   Multiple environment ready (development, production)
@@ -48,9 +46,6 @@ The authentication process is driven by signed payloads with the [CIP-0030 Carda
 *   Node.js **10+**
 *   MongoDB **3.6+**
 *   Redis **5.0+**
-
-
-
 
 ## How to install
 
@@ -202,8 +197,6 @@ When you create a new controller, try to also create another folder with validat
 This project is started by Daniel Avellaneda. He's prepared a well-thought full backend for authorization and authentication. I've taken advantage from this previous work. So feel free to thank Daniel buying him a coffee.
 
 <a href="https://www.buymeacoffee.com/muGHf41NT" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-
-
 
 ## Bugs or improvements
 
