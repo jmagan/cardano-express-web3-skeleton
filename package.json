@@ -1,11 +1,11 @@
 {
-  "name": "node-express-mongodb-jwt-rest-api-skeleton",
-  "version": "9.0.5",
-  "description": "Node.js express.js MongoDB JWT REST API - This is a basic API REST skeleton written on JavaScript using async/await. Great for building a starter web API for your front-end (Android, iOS, Vue, react, angular, or anything that can consume an API)",
+  "name": "cardano-express-web3-skeleton",
+  "version": "0.0.1",
+  "description": "Backend skeleton for Cardano Web3 dApps. This backend uses Express as server and MongoDB as user database. It provides a basic API Rest for authentication and authorization using CIP-0008 Signing spec and CIP-0030 Cardano dApp-Wallet Web Bridge.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.git"
+    "url": "https://github.com/jmagan/cardano-express-web3-skeleton.git"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production pm2 start server.js",
@@ -50,7 +50,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run remark",
-      "pre-push": "npm run test || true"
+      "pre-push": "true || npm run test || true"
     }
   },
   "lint-staged": {
@@ -112,6 +112,10 @@
     "remark-cli": "^9.0.0"
   },
   "keywords": [
+    "cardano",
+    "web3",
+    "dapp",
+    "blockchain",
     "javascript",
     "api",
     "node",
