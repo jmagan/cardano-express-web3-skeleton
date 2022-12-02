@@ -4,13 +4,13 @@
 
 ## Getting started
 
-This is a basic API REST skeleton for Cardano dApp authentication and authorization written on JavaScript using async/await. This backend utilizes the standard [CIP-0008 Signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md). The project has all necessary endpoints for athentication, authorization and user management. The authentication token is generated as a jwt web token, therefore it can be shared easily by other services.
+This is a basic API REST skeleton for Cardano dApp authentication and authorization written on JavaScript using async/await. This backend utilizes the standard [CIP-0008 signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md). The project has all necessary endpoints for athentication, authorization and user management. The authentication token is generated as a JWT web token, therefore it can be shared easily by other services.
 
-The authentication process is driven by signed payloads with the [CIP-0030 Cardano dApp-Wallet Web Bridge](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030). There are three actions, which require the wallet signature, *Signup*, *Login* and *Reset*. Once the payload with the desired action is signed with the correct private key, a jwt web token is issued and takes control of the session.
+The authentication process is driven by signed payloads with the [CIP-0030 Cardano dApp-wallet web bridge](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030). There are three actions that require the user's wallet signature, *Signup*, *Login* and *Reset*. Once the payload with the desired action is signed with the correct private key, a JWT web token is issued and takes control of the session.
 
 ## Features\*
 
-*   Cardano [CIP-0008 Signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md) for the login and registration process.
+*   Cardano [CIP-0008 signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md) for the login and registration process.
 *   Multiple environment ready (development, production)
 *   Custom email/cardano address user system with basic security and blocking for preventing brute force attacks.
 *   Compressed responses.
@@ -152,6 +152,38 @@ npm run lint
 ## Usage
 
 Once everything is set up to test API routes either use Postman or any other api testing application.
+
+### Mocking Cardano signatures
+
+In order to use some endpoints, we need to sign payloads according to CIP-0008 signing spec. For this purpose, the project has a cli util for creating the keys and signatures. This can simulate 255 unique wallets selecting a number between 0 and 254. The cli util starts with the following command:
+
+```bash
+$ node mockWalletSignatures.js
+```
+
+In order to get the key and signature, we need to go through three steps.
+
+1.  First, select the payload for your endpoint. Each end point needs the corresponding action.
+2.  If the payload needs some additional info, the prompt will ask about them. In the case of the login payload, we will need to insert an email.
+3.  Select a number between 0 and 254 for selecting a unique wallet. Currently, the number 0 belongs to the admin's wallet and the number 1 to the simple user's wallet. These users are created in the database by the seed script. You can use them for testing purposes in Postman.
+
+In the next example, we can find how to create a login payload for the admin's account.
+
+    🤖 Please, select the action for the payload (S: Signup, R: Reset, L: Login)
+    Action: L
+    🤖 Creating login payload.
+    User email: admin@admin.com
+    🤖 Choose a number between 0 and 254. Each number represents a unique address and private key. For example in the sample data, the number 0 is the wallet for admin and the number 1 for the simple user. 
+    Wallet number: 0
+    🤖 Generating wallet address, key and signature.
+
+    📪 Address: stake1u89exkzjnh6898pjg632qv7tnqs6h073dhjg3qq9jp9tcsgq0wfzr
+
+    🔑 Key: a201012158203b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29 
+
+    📝 Signature: 845828a16761646472657373581de1cb9358529df4729c3246a2a033cb9821abbfd16de4888005904abc41a166686173686564f4583a7b22686f7374223a22484f5354222c22616374696f6e223a224c6f67696e222c22656d61696c223a2261646d696e4061646d696e2e636f6d227d5840f93faf1473ad7ff9cdcbc4e2acbb4c24e90329c2ee77b04a8fcc8a716e04df9ae4094fb86f1ff3a88c85e892bf166d1b03bcf5c98cb821be40c285d9fea3e804 
+
+The address, key and signature will be used calling the endpoints. This login endpoint call is currently implemented in the `postman-example.json`.
 
 ### Postman API example collection
 
