@@ -17,7 +17,7 @@ const {
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
 
-const host = 'HOST'
+const host = process.env.HOST
 
 const stakePrivateKey1 = createFakePrivateKey(10)
 const stakeAddress1 = createRewardAddress(stakePrivateKey1)
@@ -171,6 +171,35 @@ describe('*********** AUTH ***********', () => {
           res.body.should.include.keys('token', 'user')
           createdID.push(res.body.user._id)
           verification = res.body.user.verification
+          done()
+        })
+    })
+    it('it should NOT POST a register if payload data mismatch request data', (done) => {
+      const user = {
+        name: faker.name.firstName(),
+        email: faker.internet.email(),
+        walletAddress: stakeAddress1.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+          'hex'
+        ),
+        signature: Buffer.from(
+          createRegisterUserSignature(
+            faker.name.firstName(),
+            faker.internet.email(),
+            stakeAddress1,
+            stakePrivateKey1
+          ).to_bytes()
+        ).toString('hex')
+      }
+      chai
+        .request(server)
+        .post('/register')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.a('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
           done()
         })
     })

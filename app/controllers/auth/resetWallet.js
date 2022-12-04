@@ -9,6 +9,7 @@ const { handleError } = require('../../middleware/utils')
 const {
   verifyCoseSign1SignatureAndAddress
 } = require('./helpers/verifyCoseSign1SignatureAndAddress')
+const verifyPayload = require('./helpers/verifyPayload')
 
 /**
  * Reset password function called by route
@@ -26,6 +27,8 @@ const resetWallet = async (req, res) => {
       data.signature,
       data.walletAddress
     )
+
+    await verifyPayload(data.signature, 'Reset')
 
     await updateWallet(data.walletAddress, user)
     const result = await markChangeWalletAsUsed(req, changeWallet)
