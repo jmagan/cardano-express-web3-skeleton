@@ -11,6 +11,7 @@ const {
 
 const { handleError } = require('../../middleware/utils')
 const { checkSignature } = require('../../middleware/auth')
+const verifyPayload = require('./helpers/verifyPayload')
 
 /**
  * Login function called by route
@@ -28,7 +29,8 @@ const login = async (req, res) => {
       data.signature,
       user
     )
-    if (!isSignatureChecked) {
+    const payload = await verifyPayload(data.signature, 'Login')
+    if (!isSignatureChecked || payload.email !== data.email) {
       handleError(res, await signatureIsInvalid(user))
     } else {
       // all ok, register access and return token
