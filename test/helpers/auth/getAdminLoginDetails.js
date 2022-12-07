@@ -11,17 +11,14 @@ const { createRewardAddress } = require('./createRewardAddress')
 const getAdminLoginDetails = (host) => {
   /**
    *
-   * @param {String} name
-   * @param {String} email
    * @param {CSL.RewardAddress} address
    * @param {CSL.PrivateKey} PrivateKey
    * @returns
    */
-  const createLoginUserSignature = (email, address, privateKey) => {
+  const createLoginUserSignature = (address, privateKey) => {
     const payload = {
       host,
-      action: 'Login',
-      email
+      action: 'Login'
     }
     return createCOSESign1Signature(payload, address, privateKey)
   }
@@ -30,14 +27,9 @@ const getAdminLoginDetails = (host) => {
   const adminStakeAddress = createRewardAddress(adminPrivateKey)
 
   return {
-    email: 'admin@admin.com',
     key: Buffer.from(createCOSEKey(adminPrivateKey).to_bytes()).toString('hex'),
     signature: Buffer.from(
-      createLoginUserSignature(
-        'admin@admin.com',
-        adminStakeAddress,
-        adminPrivateKey
-      ).to_bytes()
+      createLoginUserSignature(adminStakeAddress, adminPrivateKey).to_bytes()
     ).toString('hex')
   }
 }

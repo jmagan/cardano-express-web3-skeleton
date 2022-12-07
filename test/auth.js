@@ -56,11 +56,10 @@ const createRegisterUserSignature = (name, email, address, privateKey) => {
  * @param {CSL.PrivateKey} PrivateKey
  * @returns
  */
-const createLoginUserSignature = (email, address, privateKey) => {
+const createLoginUserSignature = (address, privateKey) => {
   const payload = {
     host,
-    action: 'Login',
-    email
+    action: 'Login'
   }
   return createCOSESign1Signature(payload, address, privateKey)
 }
@@ -76,26 +75,16 @@ const badUser = {
   email: 'bad@user.com'
 }
 const badLoginDetails = {
-  email: 'bad@user.com',
   key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString('hex'),
   signature: Buffer.from(
-    createLoginUserSignature(
-      'admin@admin.com',
-      stakeAddress2,
-      stakePrivateKey2
-    ).to_bytes()
+    createLoginUserSignature(stakeAddress2, stakePrivateKey2).to_bytes()
   ).toString('hex')
 }
 
 const badUserLoginDetails = {
-  email: 'bad@user.com',
   key: Buffer.from(createCOSEKey(stakePrivateKey2).to_bytes()).toString('hex'),
   signature: Buffer.from(
-    createLoginUserSignature(
-      'admin@admin.com',
-      stakeAddress2,
-      stakePrivateKey2
-    ).to_bytes()
+    createLoginUserSignature(stakeAddress2, stakePrivateKey2).to_bytes()
   ).toString('hex')
 }
 

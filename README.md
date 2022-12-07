@@ -172,7 +172,6 @@ In the next example, we can find how to create a login payload for the admin's a
     🤖 Please, select the action for the payload (S: Signup, R: Reset, L: Login)
     Action: L
     🤖 Creating login payload.
-    User email: admin@admin.com
     🤖 Choose a number between 0 and 254. Each number represents a unique address and private key. For example in the sample data, the number 0 is the wallet for admin and the number 1 for the simple user. 
     Wallet number: 0
     🤖 Generating wallet address, key and signature.
