@@ -51,16 +51,9 @@ const getPayload = async () => {
     case 'L':
     case 'l':
       console.log(`\u{1F916} Creating login payload.`)
-      const loginPrompt = await prompt.get([
-        {
-          name: 'email',
-          description: 'User email'
-        }
-      ])
       return {
         host,
-        action: 'Login',
-        email: loginPrompt.email
+        action: 'Login'
       }
   }
 }

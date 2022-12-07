@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "eddf33bd-8e58-46ed-8282-c563db66922a",
+		"_postman_id": "44e6cfbc-b2b8-4c41-8ceb-32573e3e0d25",
 		"name": "api node mongo jwt",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "11365590"
@@ -226,11 +226,6 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{
-									"key": "email",
-									"value": "admin@admin.com",
-									"type": "text"
-								},
 								{
 									"key": "key",
 									"value": "a201012158203b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29",

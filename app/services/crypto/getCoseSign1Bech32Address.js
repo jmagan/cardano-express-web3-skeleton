@@ -6,7 +6,7 @@ const { buildErrObject } = require('../../middleware/utils')
  * Get the bech32 address from a COSE_Sign1 signature
  * @param {String} signature - Hex string represeantation of a COSE_Sign1 signature
  */
-const verifyCoseSign1Address = (signature) => {
+const getCoseSign1Bech32Address = (signature) => {
   return new Promise((resolve, reject) => {
     try {
       const coseSignature = MSG.COSESign1.from_bytes(
@@ -29,4 +29,4 @@ const verifyCoseSign1Address = (signature) => {
   })
 }
 
-module.exports = { verifyCoseSign1Address }
+module.exports = { getCoseSign1Bech32Address }

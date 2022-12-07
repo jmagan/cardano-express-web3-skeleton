@@ -1,7 +1,6 @@
 const { matchedData } = require('express-validator')
 
 const {
-  findUser,
   userIsBlocked,
   checkLoginAttemptsAndBlockExpires,
   signatureIsInvalid,
@@ -12,6 +11,8 @@ const {
 const { handleError } = require('../../middleware/utils')
 const { checkSignature } = require('../../middleware/auth')
 const verifyPayload = require('./helpers/verifyPayload')
+const { getCoseSign1Bech32Address } = require('../../services/crypto')
+const { findUserByWalleAddress } = require('./helpers/findUserByWalletAddress')
 
 /**
  * Login function called by route
@@ -21,7 +22,8 @@ const verifyPayload = require('./helpers/verifyPayload')
 const login = async (req, res) => {
   try {
     const data = matchedData(req)
-    const user = await findUser(data.email)
+    const walletAddress = await getCoseSign1Bech32Address(data.signature)
+    const user = await findUserByWalleAddress(walletAddress)
     await userIsBlocked(user)
     await checkLoginAttemptsAndBlockExpires(user)
     const isSignatureChecked = await checkSignature(
@@ -29,8 +31,8 @@ const login = async (req, res) => {
       data.signature,
       user
     )
-    const payload = await verifyPayload(data.signature, 'Login')
-    if (!isSignatureChecked || payload.email !== data.email) {
+    await verifyPayload(data.signature, 'Login')
+    if (!isSignatureChecked) {
       handleError(res, await signatureIsInvalid(user))
     } else {
       // all ok, register access and return token
