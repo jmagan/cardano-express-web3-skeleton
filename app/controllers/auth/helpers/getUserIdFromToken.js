@@ -14,7 +14,7 @@ const getUserIdFromToken = (token = '') => {
         if (err.name === 'TokenExpiredError') {
           reject(buildErrObject(401, 'EXPIRED_TOKEN'))
         } else {
-          reject(buildErrObject(409, 'BAD_TOKEN'))
+          reject(buildErrObject(401, 'INVALID_TOKEN'))
         }
       }
       resolve(decoded.data._id)
