@@ -1,19 +1,21 @@
 const UserAccess = require('../../../models/userAccess')
 const { setUserInfo } = require('./setUserInfo')
-const { generateToken } = require('./generateToken')
+const { generateAccessToken } = require('./generateAccessToken.js')
 const {
   getIP,
   getBrowserInfo,
   getCountry,
   buildErrObject
 } = require('../../../middleware/utils')
+const { generateRefreshToken } = require('./generateRefreshToken')
 
 /**
  * Saves a new user access and then returns token
  * @param {Object} req - request object
+ * @param {import('express').Response} res - response object
  * @param {Object} user - user object
  */
-const saveUserAccessAndReturnToken = (req = {}, user = {}) => {
+const saveUserAccessAndReturnToken = (req = {}, res = {}, user = {}) => {
   return new Promise((resolve, reject) => {
     const userAccess = new UserAccess({
       email: user.email,
@@ -27,9 +29,16 @@ const saveUserAccessAndReturnToken = (req = {}, user = {}) => {
           return reject(buildErrObject(422, err.message))
         }
         const userInfo = await setUserInfo(user)
+
+        res.cookie('jwt', generateRefreshToken(user._id), {
+          httpOnly: true,
+          sameSite: 'None',
+          secure: process.env.NODE_ENV !== 'development',
+          maxAge: 24 * 60 * 60 * 1000
+        })
         // Returns data with access token
         resolve({
-          token: generateToken(user._id),
+          accessToken: generateAccessToken(user._id),
           user: userInfo
         })
       } catch (error) {

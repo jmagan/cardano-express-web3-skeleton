@@ -5,11 +5,12 @@ const { encrypt } = require('../../../middleware/auth')
  * Generates a token
  * @param {Object} user - user object
  */
-const generateToken = (user = '') => {
+const generateRefreshToken = (user = '') => {
   try {
     // Gets expiration time
     const expiration =
-      Math.floor(Date.now() / 1000) + 60 * process.env.JWT_EXPIRATION_IN_MINUTES
+      Math.floor(Date.now() / 1000) +
+      Number(process.env.JWT_REFRESH_TOKEN_EXPIRATION_IN_SECONDS)
 
     // returns signed and encrypted token
     return encrypt(
@@ -28,4 +29,4 @@ const generateToken = (user = '') => {
   }
 }
 
-module.exports = { generateToken }
+module.exports = { generateRefreshToken }

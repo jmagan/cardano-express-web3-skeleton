@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5"
+  },
+  "include": ["app/**/*", "test/**/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,4 +1,4 @@
-const { generateToken } = require('./generateToken')
+const { generateAccessToken } = require('./generateAccessToken')
 
 /**
  * Builds the registration token
@@ -14,7 +14,7 @@ const returnRegisterToken = (
       userInfo.verification = verification
     }
     const data = {
-      token: generateToken(_id),
+      accessToken: generateAccessToken(_id),
       user: userInfo
     }
     resolve(data)

@@ -16,8 +16,8 @@ const { findUserByWalleAddress } = require('./helpers/findUserByWalletAddress')
 
 /**
  * Login function called by route
- * @param {Object} req - request object
- * @param {Object} res - response object
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
  */
 const login = async (req, res) => {
   try {
@@ -38,7 +38,7 @@ const login = async (req, res) => {
       // all ok, register access and return token
       user.loginAttempts = 0
       await saveLoginAttemptsToDB(user)
-      res.status(200).json(await saveUserAccessAndReturnToken(req, user))
+      res.status(200).json(await saveUserAccessAndReturnToken(req, res, user))
     }
   } catch (error) {
     handleError(res, error)

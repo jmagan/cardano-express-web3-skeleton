@@ -9,7 +9,7 @@ const { findUser } = require('./findUser')
 const { findUserById } = require('./findUserById')
 const { findUserToResetWallet } = require('./findUserToResetWallet')
 const { changeWalletResponse } = require('./changeWalletResponse')
-const { generateToken } = require('./generateToken')
+const { generateAccessToken } = require('./generateAccessToken')
 const { getUserIdFromToken } = require('./getUserIdFromToken')
 const { markChangeWalletAsUsed } = require('./markChangeWalletAsUsed')
 const { signatureIsInvalid } = require('./signatureIsInvalid')
@@ -25,6 +25,7 @@ const { updateWallet } = require('./updateWallet')
 const { userIsBlocked } = require('./userIsBlocked')
 const { verificationExists } = require('./verificationExists')
 const { verifyUser } = require('./verifyUser')
+const { generateRefreshToken } = require('./generateRefreshToken')
 
 module.exports = {
   blockIsExpired,
@@ -36,7 +37,7 @@ module.exports = {
   findUserById,
   findUserToResetWallet,
   changeWalletResponse,
-  generateToken,
+  generateAccessToken,
   getUserIdFromToken,
   markChangeWalletAsUsed,
   signatureIsInvalid,
@@ -49,5 +50,6 @@ module.exports = {
   updateWallet,
   userIsBlocked,
   verificationExists,
-  verifyUser
+  verifyUser,
+  generateRefreshToken
 }

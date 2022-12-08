@@ -35,8 +35,8 @@ describe('*********** USERS ***********', () => {
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an('object')
-          res.body.should.have.property('token')
-          tokens.admin = res.body.token
+          res.body.should.have.property('accessToken')
+          tokens.admin = res.body.accessToken
           done()
         })
     })
@@ -48,8 +48,8 @@ describe('*********** USERS ***********', () => {
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an('object')
-          res.body.should.have.property('token')
-          tokens.user = res.body.token
+          res.body.should.have.property('accessToken')
+          tokens.user = res.body.accessToken
           done()
         })
     })
