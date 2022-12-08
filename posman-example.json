@@ -203,9 +203,9 @@
 								"exec": [
 									"//- auto populates token to environment variables",
 									"pm.test(\"Token returned from login, added to environment.\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"token\");",
+									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
 									"    const jsonData = pm.response.json();",
-									"    pm.environment.set('authToken', jsonData.token);",
+									"    pm.environment.set('authToken', jsonData.accessToken);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -252,6 +252,22 @@
 				},
 				{
 					"name": "/token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//- auto populates token to environment variables",
+									"pm.test(\"Token returned from login, added to environment.\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('authToken', jsonData.accessToken);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [

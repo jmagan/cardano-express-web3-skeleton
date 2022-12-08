@@ -1,26 +1,22 @@
 const {
   getUserIdFromToken,
   findUserById,
-  saveUserAccessAndReturnToken
+  generateAccessToken
 } = require('./helpers')
 const { isIDGood, handleError } = require('../../middleware/utils')
 
 /**
  * Refresh token function called by route
- * @param {Object} req - request object
- * @param {Object} res - response object
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
  */
 const getRefreshToken = async (req, res) => {
   try {
-    const tokenEncrypted = req.headers.authorization
-      .replace('Bearer ', '')
-      .trim()
+    const tokenEncrypted = req.cookies['jwt']
     let userId = await getUserIdFromToken(tokenEncrypted)
     userId = await isIDGood(userId)
     const user = await findUserById(userId)
-    const token = await saveUserAccessAndReturnToken(req, user)
-    // Removes user info from response
-    delete token.user
+    const token = { accessToken: generateAccessToken(user) }
     res.status(200).json(token)
   } catch (error) {
     handleError(res, error)

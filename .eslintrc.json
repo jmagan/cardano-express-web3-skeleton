@@ -94,7 +94,7 @@
   },
   "extends": [
     "formidable/rules/eslint/best-practices/off",
-    "formidable/rules/eslint/es6/on",
+    "formidable/rules/eslint/es6/off",
     "formidable/rules/eslint/errors/off",
     "formidable/rules/eslint/strict/on",
     "formidable/rules/eslint/node/off",

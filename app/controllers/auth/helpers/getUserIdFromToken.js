@@ -11,7 +11,11 @@ const getUserIdFromToken = (token = '') => {
     // Decrypts, verifies and decode token
     jwt.verify(decrypt(token), process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
-        reject(buildErrObject(409, 'BAD_TOKEN'))
+        if (err.name === 'TokenExpiredError') {
+          reject(buildErrObject(401, 'EXPIRED_TOKEN'))
+        } else {
+          reject(buildErrObject(401, 'INVALID_TOKEN'))
+        }
       }
       resolve(decoded.data._id)
     })

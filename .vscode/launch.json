@@ -7,6 +7,7 @@
       "request": "launch",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
       "program": "${workspaceFolder}/server.js",
+      "env": { "NODE_ENV": "development"},
       "restart": true,
       "protocol": "inspector",
       "console": "integratedTerminal",

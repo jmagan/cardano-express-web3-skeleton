@@ -65,7 +65,8 @@ const createLoginUserSignature = (address, privateKey) => {
 }
 
 const loginDetails = getAdminLoginDetails(host)
-let token = ''
+let accessToken = ''
+let refreshTokenCookie = ''
 const createdID = []
 let verification = ''
 let verificationChange = ''
@@ -125,8 +126,10 @@ describe('*********** AUTH ***********', () => {
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an('object')
-          res.body.should.have.property('token')
-          token = res.body.token
+          res.body.should.have.property('accessToken')
+          res.should.has.cookie('jwt')
+          accessToken = res.body.accessToken
+          refreshTokenCookie = res.get('Set-Cookie')[0]
           done()
         })
     })
@@ -157,7 +160,7 @@ describe('*********** AUTH ***********', () => {
         .end((err, res) => {
           res.should.have.status(201)
           res.body.should.be.an('object')
-          res.body.should.include.keys('token', 'user')
+          res.body.should.include.keys('accessToken', 'user')
           createdID.push(res.body.user._id)
           verification = res.body.user.verification
           done()
@@ -303,11 +306,12 @@ describe('*********** AUTH ***********', () => {
       chai
         .request(server)
         .get('/token')
-        .set('Authorization', `Bearer ${token}`)
+        .set('Cookie', refreshTokenCookie)
+        .set('Authorization', `Bearer ${accessToken}`)
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an('object')
-          res.body.should.have.property('token')
+          res.body.should.have.property('accessToken')
           done()
         })
     })
@@ -338,7 +342,7 @@ describe('*********** AUTH ***********', () => {
         .end((err, res) => {
           res.should.have.status(201)
           res.body.should.be.an('object')
-          res.body.should.include.keys('token', 'user')
+          res.body.should.include.keys('accessToken', 'user')
           createdID.push(res.body.user._id)
           done()
         })

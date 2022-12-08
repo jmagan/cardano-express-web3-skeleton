@@ -32,7 +32,8 @@ The authentication process is driven by signed payloads with the [CIP-0030 Carda
 *   NPM script for keeping good source code formatting using prettier and ESLint.
 *   Use of ESLint for good coding practices.
 *   Mailer example with Nodemailer and Mailgun.
-*   Ability to refresh token
+*   HTTPOnly refresh token cookie.
+*   Ability to refresh token.
 *   JWT Tokens, make requests with a token after login with `Authorization` header with value `Bearer yourToken` where `yourToken` is the **signed and encrypted token** given in the response from the login process.
 
 ## Requirements
