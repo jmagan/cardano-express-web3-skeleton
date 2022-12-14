@@ -32,8 +32,6 @@ const saveUserAccessAndReturnToken = (req = {}, res = {}, user = {}) => {
 
         res.cookie('jwt', generateRefreshToken(user._id), {
           httpOnly: true,
-          sameSite: 'None',
-          secure: process.env.NODE_ENV !== 'development',
           maxAge: 24 * 60 * 60 * 1000
         })
         // Returns data with access token
