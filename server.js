@@ -60,7 +60,12 @@ i18n.configure({
 app.use(i18n.init)
 
 // Init all other stuff
-app.use(cors())
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+    credentials: true
+  })
+)
 app.use(passport.initialize())
 app.use(compression())
 app.use(helmet())
