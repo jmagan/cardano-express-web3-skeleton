@@ -1,3 +1,5 @@
+## v0.2.0
+
 ## v0.1.0 (Dic 08, 2022)
 
 *   Login request without user's email
