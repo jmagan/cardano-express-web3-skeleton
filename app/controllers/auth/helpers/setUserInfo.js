@@ -9,7 +9,8 @@ const setUserInfo = (req = {}) => {
       name: req.name,
       email: req.email,
       role: req.role,
-      verified: req.verified
+      verified: req.verified,
+      walletAddress: req.walletAddress
     }
     // Adds verification for testing purposes
     if (process.env.NODE_ENV !== 'production') {

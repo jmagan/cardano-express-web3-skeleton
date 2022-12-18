@@ -14,21 +14,22 @@ const checkQueryString = (query = {}) => {
         typeof query.fields !== 'undefined'
       ) {
         const data = {
-          $or: []
+          $and: []
         }
         const array = []
         // Takes fields param and builds an array by splitting with ','
         const arrayFields = query.fields.split(',')
+        const arrayFilter = query.filter.split(',')
         // Adds SQL Like %word% with regex
-        arrayFields.map((item) => {
+        arrayFields.map((item, index) => {
           array.push({
             [item]: {
-              $regex: new RegExp(query.filter, 'i')
+              $regex: new RegExp(arrayFilter[index], 'i')
             }
           })
         })
         // Puts array result in data
-        data.$or = array
+        data.$and = array
         resolve(data)
       } else {
         resolve({})
