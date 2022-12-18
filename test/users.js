@@ -79,7 +79,7 @@ describe('*********** USERS ***********', () => {
     it('it should GET the users with filters', (done) => {
       chai
         .request(server)
-        .get('/users?filter=admin&fields=name,email,city,country,phone')
+        .get('/users?filter=admin&fields=email')
         .set('Authorization', `Bearer ${tokens.admin}`)
         .end((err, res) => {
           res.should.have.status(200)
