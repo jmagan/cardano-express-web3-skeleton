@@ -1,7 +1,8 @@
 const {
   getUserIdFromToken,
   findUserById,
-  generateAccessToken
+  generateAccessToken,
+  setUserInfo
 } = require('./helpers')
 const { isIDGood, handleError } = require('../../middleware/utils')
 
@@ -16,7 +17,8 @@ const getRefreshToken = async (req, res) => {
     let userId = await getUserIdFromToken(tokenEncrypted)
     userId = await isIDGood(userId)
     const user = await findUserById(userId)
-    const token = { accessToken: generateAccessToken(user) }
+    const userInfo = await setUserInfo(user)
+    const token = { accessToken: generateAccessToken(user), user: userInfo }
     res.status(200).json(token)
   } catch (error) {
     handleError(res, error)
