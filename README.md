@@ -12,7 +12,7 @@ The authentication process is driven by signed payloads with the [CIP-0030 Carda
 
 This repository is self-contained and you can use ir and test it through the test suite and Postman. You can read more about the Postman examples in the usage section below. This is a good method for developing and debugging the code. But a front end is required to better understand how it works.
 
-I've created another template for creating your web3 applications with ReactJS. You can clone it from the next repository [jmagan/cardano-react-web3-skeleton](https://github.com/jmagan/cardano-react-web3-skeleton). 
+I've created another template for creating your web3 applications with ReactJS. You can clone it from the next repository [jmagan/cardano-react-web3-skeleton](https://github.com/jmagan/cardano-react-web3-skeleton).
 
 ## Features
 
