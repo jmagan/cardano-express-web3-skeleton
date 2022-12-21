@@ -394,6 +394,19 @@ describe('*********** AUTH ***********', () => {
         })
     })
   })
+
+  describe('/GET logout', () => {
+    it('should logout', (done) => {
+      chai
+        .request(server)
+        .get('/logout')
+        .end((err, res) => {
+          res.should.not.has.cookie('jwt')
+          done()
+        })
+    })
+  })
+
   after((done) => {
     createdID.forEach((id) => {
       User.findByIdAndRemove(id, (err) => {

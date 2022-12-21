@@ -8,7 +8,13 @@ This is a basic API REST skeleton for Cardano dApp authentication and authorizat
 
 The authentication process is driven by signed payloads with the [CIP-0030 Cardano dApp-wallet web bridge](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030). There are three actions that require the user's wallet signature, *Signup*, *Login* and *Reset*. Once the payload with the desired action is signed with the correct private key, a JWT web token is issued and takes control of the session.
 
-## Features\*
+## Frontend
+
+This repository is self-contained and you can use ir and test it through the test suite and Postman. You can read more about the Postman examples in the usage section below. This is a good method for developing and debugging the code. But a front end is required to better understand how it works.
+
+I've created another template for creating your web3 applications with ReactJS. You can clone it from the next repository [jmagan/cardano-react-web3-skeleton](https://github.com/jmagan/cardano-react-web3-skeleton).
+
+## Features
 
 *   Cardano [CIP-0008 signing spec](https://github.com/cardano-foundation/CIPs/blob/master/CIP-0008/README.md) for the login and registration process.
 *   Multiple environment ready (development, production)

@@ -1,6 +1,9 @@
-## v0.2.0
+## v0.2.0 (Dec 21, 2022)
 
-## v0.1.0 (Dic 08, 2022)
+*   Logout implementation
+*   React frontend documentation
+
+## v0.1.0 (Dec 08, 2022)
 
 *   Login request without user's email
 *   Refresh token with HTTPOnly Cookie

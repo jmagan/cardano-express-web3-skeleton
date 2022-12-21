@@ -8,7 +8,8 @@ const {
   changeWallet,
   resetWallet,
   getRefreshToken,
-  login
+  login,
+  logout
 } = require('../controllers/auth')
 
 const {
@@ -52,5 +53,10 @@ router.get('/token', trimRequest.all, getRefreshToken)
  * Login route
  */
 router.post('/login', trimRequest.all, validateLogin, login)
+
+/*
+ *  Logout route
+ */
+router.get('/logout', trimRequest.all, logout)
 
 module.exports = router
