@@ -3,6 +3,7 @@ const { matchedData } = require('express-validator')
 const { registerUser, setUserInfo, returnRegisterToken } = require('./helpers')
 
 const { handleError, buildErrObject } = require('../../middleware/utils')
+const { walletAddressExists } = require('../../services/users')
 const {
   emailExists,
   sendRegistrationEmailMessage
@@ -22,7 +23,9 @@ const register = async (req, res) => {
     // Gets locale from header 'Accept-Language'
     const locale = req.getLocale()
     req = matchedData(req)
-    const doesEmailExists = await emailExists(req.email)
+    const doesEmailOrWalletAddressExists =
+      (await emailExists(req.email)) ||
+      (await walletAddressExists(req.walletAddress))
     await verifyCoseSign1SignatureAndAddress(
       req.key,
       req.signature,
@@ -35,7 +38,7 @@ const register = async (req, res) => {
       throw buildErrObject(422, 'INVALID_PAYLOAD')
     }
 
-    if (!doesEmailExists) {
+    if (!doesEmailOrWalletAddressExists) {
       const item = await registerUser(req)
       const userInfo = await setUserInfo(item)
       const response = await returnRegisterToken(item, userInfo)

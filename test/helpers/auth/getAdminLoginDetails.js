@@ -18,7 +18,8 @@ const getAdminLoginDetails = (host) => {
   const createLoginUserSignature = (address, privateKey) => {
     const payload = {
       host,
-      action: 'Login'
+      action: 'Login',
+      timestamp: Date.now()
     }
     return createCOSESign1Signature(payload, address, privateKey)
   }

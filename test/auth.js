@@ -19,15 +19,22 @@ const should = chai.should()
 
 const host = process.env.HOST
 
+const adminPrivateKey = createFakePrivateKey(0)
+const adminStakeAddress = createRewardAddress(adminPrivateKey)
+
 const stakePrivateKey1 = createFakePrivateKey(10)
 const stakeAddress1 = createRewardAddress(stakePrivateKey1)
 
 const stakePrivateKey2 = createFakePrivateKey(11)
-
 const stakeAddress2 = createRewardAddress(stakePrivateKey2)
 
+const stakePrivateKey3 = createFakePrivateKey(12)
+const stakeAddress3 = createRewardAddress(stakePrivateKey3)
+
 const testName = `${faker.name.firstName()} ${faker.name.lastName()}`
-const testEmail = `${faker.internet.email()}`
+const testEmail = faker.internet.email()
+
+const testEmail2 = faker.internet.email()
 
 /**
  *
@@ -42,7 +49,8 @@ const createRegisterUserSignature = (name, email, address, privateKey) => {
     host,
     action: 'Sign up',
     name,
-    email
+    email,
+    timestamp: Date.now()
   }
 
   return createCOSESign1Signature(payload, address, privateKey)
@@ -59,7 +67,8 @@ const createRegisterUserSignature = (name, email, address, privateKey) => {
 const createLoginUserSignature = (address, privateKey) => {
   const payload = {
     host,
-    action: 'Login'
+    action: 'Login',
+    timestamp: Date.now()
   }
   return createCOSESign1Signature(payload, address, privateKey)
 }
@@ -133,6 +142,67 @@ describe('*********** AUTH ***********', () => {
           done()
         })
     })
+    it('it should NOT verify the payload if it is expired', (done) => {
+      const payload = {
+        host: process.env.HOST,
+        action: 'Login',
+        timestamp:
+          Date.now() - process.env.PAYLOAD_VALIDITY_IN_SECONDS * 1000 - 1
+      }
+
+      const coseSign1Signature = createCOSESign1Signature(
+        payload,
+        adminStakeAddress,
+        adminPrivateKey
+      )
+      const coseKey = createCOSEKey(adminPrivateKey)
+      const loginDetailsExpiredPayload = {
+        key: Buffer.from(coseKey.to_bytes()).toString('hex'),
+        signature: Buffer.from(coseSign1Signature.to_bytes()).toString('hex')
+      }
+
+      chai
+        .request(server)
+        .post('/login')
+        .send(loginDetailsExpiredPayload)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.a('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.should.have.property('msg').eql('EXPIRED_PAYLOAD')
+          done()
+        })
+    })
+
+    it('it should NOT verify the payload if timestamp is missing', (done) => {
+      const payload = {
+        host: process.env.HOST,
+        action: 'Login'
+      }
+
+      const coseSign1Signature = createCOSESign1Signature(
+        payload,
+        adminStakeAddress,
+        adminPrivateKey
+      )
+      const coseKey = createCOSEKey(adminPrivateKey)
+      const loginDetailsExpiredPayload = {
+        key: Buffer.from(coseKey.to_bytes()).toString('hex'),
+        signature: Buffer.from(coseSign1Signature.to_bytes()).toString('hex')
+      }
+
+      chai
+        .request(server)
+        .post('/login')
+        .send(loginDetailsExpiredPayload)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.a('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
+          done()
+        })
+    })
   })
 
   describe('/POST register', () => {
@@ -170,14 +240,43 @@ describe('*********** AUTH ***********', () => {
       const user = {
         name: faker.name.firstName(),
         email: faker.internet.email(),
-        walletAddress: stakeAddress1.to_address().to_bech32(),
-        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+        walletAddress: stakeAddress3.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey3).to_bytes()).toString(
           'hex'
         ),
         signature: Buffer.from(
           createRegisterUserSignature(
             faker.name.firstName(),
             faker.internet.email(),
+            stakeAddress3,
+            stakePrivateKey3
+          ).to_bytes()
+        ).toString('hex')
+      }
+      chai
+        .request(server)
+        .post('/register')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.a('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
+          done()
+        })
+    })
+    it('it should NOT POST a register if wallet address already exists', (done) => {
+      const user = {
+        name: testName,
+        email: testEmail2,
+        walletAddress: stakeAddress1.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+          'hex'
+        ),
+        signature: Buffer.from(
+          createRegisterUserSignature(
+            testName,
+            testEmail2,
             stakeAddress1,
             stakePrivateKey1
           ).to_bytes()
@@ -191,7 +290,9 @@ describe('*********** AUTH ***********', () => {
           res.should.have.status(422)
           res.body.should.be.a('object')
           res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
+          res.body.errors.should.have
+            .property('msg')
+            .eql('WALLET_ADDRESS_ALREADY_EXISTS')
           done()
         })
     })
@@ -270,7 +371,7 @@ describe('*********** AUTH ***********', () => {
       const newAddress = createRewardAddress(newPrivateKey)
       const newCoseKey = createCOSEKey(newPrivateKey)
       const newCoseSign1 = createCOSESign1Signature(
-        { host, action: 'Reset' },
+        { host, action: 'Reset', timestamp: Date.now() },
         newAddress,
         newPrivateKey
       )

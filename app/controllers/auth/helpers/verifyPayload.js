@@ -15,6 +15,20 @@ const verifyPayload = (signature, action) => {
       throw buildErrObject(422, 'INVALID_PAYLOAD')
     }
 
+    if (process.env.NODE_ENV !== 'development') {
+      if (!Number.isInteger(payload.timestamp)) {
+        throw buildErrObject(422, 'INVALID_PAYLOAD')
+      }
+
+      if (
+        payload.timestamp > Date.now() ||
+        payload.timestamp <
+          Date.now() - process.env.PAYLOAD_VALIDITY_IN_SECONDS * 1000
+      ) {
+        throw buildErrObject(422, 'EXPIRED_PAYLOAD')
+      }
+    }
+
     return payload
   } catch (err) {
     throw buildErrObject(422, err.message)
