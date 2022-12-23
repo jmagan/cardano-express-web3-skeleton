@@ -2,7 +2,6 @@
 
 *   Wallet address uniqueness
 
-
 ## v0.2.0 (Dec 21, 2022)
 
 *   Logout implementation
