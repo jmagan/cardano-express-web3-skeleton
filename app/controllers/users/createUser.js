@@ -5,6 +5,7 @@ const {
   sendRegistrationEmailMessage
 } = require('../../middleware/emailer')
 const { createItemInDb } = require('./helpers')
+const { walletAddressExists } = require('../../services/users')
 
 /**
  * Create item function called by route
@@ -16,8 +17,10 @@ const createUser = async (req, res) => {
     // Gets locale from header 'Accept-Language'
     const locale = req.getLocale()
     req = matchedData(req)
-    const doesEmailExists = await emailExists(req.email)
-    if (!doesEmailExists) {
+    const doesEmailOrWalletAddressExists =
+      (await emailExists(req.email)) ||
+      (await walletAddressExists(req.walletAddress))
+    if (!doesEmailOrWalletAddressExists) {
       const item = await createItemInDb(req)
       sendRegistrationEmailMessage(locale, item)
       res.status(201).json(item)

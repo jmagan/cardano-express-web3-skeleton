@@ -23,11 +23,15 @@ const stakePrivateKey1 = createFakePrivateKey(10)
 const stakeAddress1 = createRewardAddress(stakePrivateKey1)
 
 const stakePrivateKey2 = createFakePrivateKey(11)
-
 const stakeAddress2 = createRewardAddress(stakePrivateKey2)
 
+const stakePrivateKey3 = createFakePrivateKey(12)
+const stakeAddress3 = createRewardAddress(stakePrivateKey3)
+
 const testName = `${faker.name.firstName()} ${faker.name.lastName()}`
-const testEmail = `${faker.internet.email()}`
+const testEmail = faker.internet.email()
+
+const testEmail2 = faker.internet.email()
 
 /**
  *
@@ -170,14 +174,43 @@ describe('*********** AUTH ***********', () => {
       const user = {
         name: faker.name.firstName(),
         email: faker.internet.email(),
-        walletAddress: stakeAddress1.to_address().to_bech32(),
-        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+        walletAddress: stakeAddress3.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey3).to_bytes()).toString(
           'hex'
         ),
         signature: Buffer.from(
           createRegisterUserSignature(
             faker.name.firstName(),
             faker.internet.email(),
+            stakeAddress3,
+            stakePrivateKey3
+          ).to_bytes()
+        ).toString('hex')
+      }
+      chai
+        .request(server)
+        .post('/register')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.a('object')
+          res.body.should.have.property('errors').that.has.property('msg')
+          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
+          done()
+        })
+    })
+    it('it should NOT POST a register if wallet address already exists', (done) => {
+      const user = {
+        name: testName,
+        email: testEmail2,
+        walletAddress: stakeAddress1.to_address().to_bech32(),
+        key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString(
+          'hex'
+        ),
+        signature: Buffer.from(
+          createRegisterUserSignature(
+            testName,
+            testEmail2,
             stakeAddress1,
             stakePrivateKey1
           ).to_bytes()
@@ -191,7 +224,9 @@ describe('*********** AUTH ***********', () => {
           res.should.have.status(422)
           res.body.should.be.a('object')
           res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
+          res.body.errors.should.have
+            .property('msg')
+            .eql('WALLET_ADDRESS_ALREADY_EXISTS')
           done()
         })
     })

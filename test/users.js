@@ -7,7 +7,12 @@ const faker = require('faker')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../server')
-const { getAdminLoginDetails, getUserLoginDetails } = require('./helpers/auth')
+const {
+  getAdminLoginDetails,
+  getUserLoginDetails,
+  createFakePrivateKey,
+  createRewardAddress
+} = require('./helpers/auth')
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
 const host = 'HOST'
@@ -15,6 +20,10 @@ const loginDetails = {
   admin: getAdminLoginDetails(host),
   user: getUserLoginDetails(host)
 }
+
+const adminPrivateKey = createFakePrivateKey(0)
+const adminStakeAddress = createRewardAddress(adminPrivateKey)
+
 const tokens = {
   admin: '',
   user: ''
@@ -136,7 +145,34 @@ describe('*********** USERS ***********', () => {
         name: faker.random.words(),
         email,
         password: faker.random.words(),
-        role: 'admin'
+        role: 'admin',
+        walletAddress: faker.random.alphaNumeric(23),
+        phone: '1234',
+        country: 'Country',
+        city: 'City'
+      }
+      chai
+        .request(server)
+        .post('/users')
+        .set('Authorization', `Bearer ${tokens.admin}`)
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(422)
+          res.body.should.be.a('object')
+          res.body.should.have.property('errors')
+          done()
+        })
+    })
+    it('it should NOT POST a user with wallet address that already exists', (done) => {
+      const user = {
+        name: faker.random.words(),
+        email: faker.internet.email(),
+        password: faker.random.words(),
+        walletAddress: adminStakeAddress.to_address().to_bech32(),
+        role: 'admin',
+        phone: '1234',
+        country: 'Country',
+        city: 'City'
       }
       chai
         .request(server)
@@ -221,7 +257,10 @@ describe('*********** USERS ***********', () => {
       const user = {
         name: faker.random.words(),
         email: 'admin@admin.com',
-        role: 'admin'
+        role: 'admin',
+        phone: '1234',
+        country: 'Country',
+        city: 'City'
       }
       chai
         .request(server)
