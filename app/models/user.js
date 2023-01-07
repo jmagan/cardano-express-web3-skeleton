@@ -62,16 +62,6 @@ const UserSchema = new mongoose.Schema(
         message: 'NOT_A_VALID_URL'
       },
       lowercase: true
-    },
-    loginAttempts: {
-      type: Number,
-      default: 0,
-      select: false
-    },
-    blockExpires: {
-      type: Date,
-      default: Date.now,
-      select: false
     }
   },
   {

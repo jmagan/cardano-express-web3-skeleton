@@ -2,6 +2,7 @@ const passport = require('passport')
 const User = require('../app/models/user')
 const auth = require('../app/middleware/auth')
 const JwtStrategy = require('passport-jwt').Strategy
+const CardanoWeb3Strategy = require('passport-cardano-web3').Strategy
 
 /**
  * Extracts token from: header, body or query
@@ -44,4 +45,13 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   })
 })
 
+const cardanoWeb3Strategy = new CardanoWeb3Strategy({
+  expirationTimeSpan:
+    process.env.NODE_ENV === 'development'
+      ? Number.MAX_SAFE_INTEGER
+      : process.env.PAYLOAD_VALIDITY_IN_SECONDS,
+  hostname: process.env.HOST
+})
+
 passport.use(jwtLogin)
+passport.use(cardanoWeb3Strategy)

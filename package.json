@@ -1,6 +1,6 @@
 {
   "name": "cardano-express-web3-skeleton",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Backend skeleton for Cardano Web3 dApps. This backend uses Express as server and MongoDB as user database. It provides a basic API Rest for authentication and authorization using CIP-0008 Signing spec and CIP-0030 Cardano dApp-Wallet Web Bridge.",
   "license": "MIT",
   "repository": {
@@ -83,8 +83,9 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.8.0",
     "nodemailer-mailgun-transport": "^2.1.5",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
+    "passport": "^0.6.0",
+    "passport-cardano-web3": "^1.0.1",
+    "passport-jwt": "^4.0.1",
     "request-ip": "^2.2.0",
     "trim-request": "^1.0.6",
     "uuid": "^8.3.2",

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const trimRequest = require('trim-request')
+const passport = require('passport')
 
 const {
   register,
@@ -27,7 +28,13 @@ const {
 /*
  * Register route
  */
-router.post('/register', trimRequest.all, validateRegister, register)
+router.post(
+  '/register',
+  trimRequest.all,
+  validateRegister,
+  passport.authenticate('cardano-web3', { action: 'Sign up', session: false }),
+  register
+)
 
 /*
  * Verify route
@@ -42,7 +49,13 @@ router.post('/change', trimRequest.all, validateChangeWallet, changeWallet)
 /*
  * Reset password route
  */
-router.post('/reset', trimRequest.all, validateResetWallet, resetWallet)
+router.post(
+  '/reset',
+  trimRequest.all,
+  validateResetWallet,
+  passport.authenticate('cardano-web3', { action: 'Reset', session: false }),
+  resetWallet
+)
 
 /*
  * Get new refresh token
@@ -52,7 +65,13 @@ router.get('/token', trimRequest.all, getRefreshToken)
 /*
  * Login route
  */
-router.post('/login', trimRequest.all, validateLogin, login)
+router.post(
+  '/login',
+  trimRequest.all,
+  validateLogin,
+  passport.authenticate('cardano-web3', { action: 'Login', session: false }),
+  login
+)
 
 /*
  *  Logout route

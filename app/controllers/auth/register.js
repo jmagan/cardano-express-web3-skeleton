@@ -8,11 +8,6 @@ const {
   emailExists,
   sendRegistrationEmailMessage
 } = require('../../middleware/emailer')
-const {
-  verifyCoseSign1SignatureAndAddress
-} = require('./helpers/verifyCoseSign1SignatureAndAddress')
-const verifyPayload = require('./helpers/verifyPayload')
-
 /**
  * Register function called by route
  * @param {Object} req - request object
@@ -22,17 +17,11 @@ const register = async (req, res) => {
   try {
     // Gets locale from header 'Accept-Language'
     const locale = req.getLocale()
+    const payload = req.authInfo
     req = matchedData(req)
     const doesEmailOrWalletAddressExists =
       (await emailExists(req.email)) ||
       (await walletAddressExists(req.walletAddress))
-    await verifyCoseSign1SignatureAndAddress(
-      req.key,
-      req.signature,
-      req.walletAddress
-    )
-
-    const payload = await verifyPayload(req.signature, 'Sign up')
 
     if (payload.email !== req.email || payload.name !== req.name) {
       throw buildErrObject(422, 'INVALID_PAYLOAD')
