@@ -1,6 +1,6 @@
 ## v1.1.0 (Jan 07, 2023)
 
-* Passport Cardano web3 implementation
+*   Passport Cardano web3 implementation
 
 ## v1.0.0 (Dec 23, 2022)
 
