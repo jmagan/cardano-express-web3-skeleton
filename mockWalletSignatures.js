@@ -36,8 +36,9 @@ const getPayload = async () => {
       ])
 
       return {
-        host,
+        url: host + '/register',
         action: 'Sign up',
+        timestamp: Date.now(),
         name: signupPrompt.name,
         email: signupPrompt.email
       }
@@ -45,15 +46,17 @@ const getPayload = async () => {
     case 'r':
       console.log(`\u{1F916} Creating reset payload.`)
       return {
-        host,
-        action: 'Reset'
+        url: host + '/reset',
+        action: 'Reset',
+        timestamp: Date.now()
       }
     case 'L':
     case 'l':
       console.log(`\u{1F916} Creating login payload.`)
       return {
-        host,
-        action: 'Login'
+        url: host + '/login',
+        action: 'Login',
+        timestamp: Date.now()
       }
   }
 }

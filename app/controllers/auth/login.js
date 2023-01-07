@@ -1,17 +1,6 @@
-const { matchedData } = require('express-validator')
-
-const {
-  userIsBlocked,
-  checkLoginAttemptsAndBlockExpires,
-  signatureIsInvalid,
-  saveLoginAttemptsToDB,
-  saveUserAccessAndReturnToken
-} = require('./helpers')
+const { saveUserAccessAndReturnToken } = require('./helpers')
 
 const { handleError } = require('../../middleware/utils')
-const { checkSignature } = require('../../middleware/auth')
-const verifyPayload = require('./helpers/verifyPayload')
-const { getCoseSign1Bech32Address } = require('../../services/crypto')
 const { findUserByWalleAddress } = require('./helpers/findUserByWalletAddress')
 
 /**
@@ -21,25 +10,9 @@ const { findUserByWalleAddress } = require('./helpers/findUserByWalletAddress')
  */
 const login = async (req, res) => {
   try {
-    const data = matchedData(req)
-    const walletAddress = await getCoseSign1Bech32Address(data.signature)
+    const walletAddress = req.user.id
     const user = await findUserByWalleAddress(walletAddress)
-    await userIsBlocked(user)
-    await checkLoginAttemptsAndBlockExpires(user)
-    const isSignatureChecked = await checkSignature(
-      data.key,
-      data.signature,
-      user
-    )
-    await verifyPayload(data.signature, 'Login')
-    if (!isSignatureChecked) {
-      handleError(res, await signatureIsInvalid(user))
-    } else {
-      // all ok, register access and return token
-      user.loginAttempts = 0
-      await saveLoginAttemptsToDB(user)
-      res.status(200).json(await saveUserAccessAndReturnToken(req, res, user))
-    }
+    res.status(200).json(await saveUserAccessAndReturnToken(req, res, user))
   } catch (error) {
     handleError(res, error)
   }

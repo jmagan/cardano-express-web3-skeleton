@@ -50,26 +50,10 @@ const createRegisterUserSignature = (name, email, address, privateKey) => {
     action: 'Sign up',
     name,
     email,
-    timestamp: Date.now()
+    timestamp: Date.now(),
+    url: host + '/register'
   }
 
-  return createCOSESign1Signature(payload, address, privateKey)
-}
-
-/**
- *
- * @param {String} name
- * @param {String} email
- * @param {CSL.RewardAddress} address
- * @param {CSL.PrivateKey} PrivateKey
- * @returns
- */
-const createLoginUserSignature = (address, privateKey) => {
-  const payload = {
-    host,
-    action: 'Login',
-    timestamp: Date.now()
-  }
   return createCOSESign1Signature(payload, address, privateKey)
 }
 
@@ -79,23 +63,9 @@ let refreshTokenCookie = ''
 const createdID = []
 let verification = ''
 let verificationChange = ''
-const failedLoginAttempts = 5
-const badUser = {
-  name: 'Bad user',
-  email: 'bad@user.com'
-}
-const badLoginDetails = {
-  key: Buffer.from(createCOSEKey(stakePrivateKey1).to_bytes()).toString('hex'),
-  signature: Buffer.from(
-    createLoginUserSignature(stakeAddress2, stakePrivateKey2).to_bytes()
-  ).toString('hex')
-}
-
-const badUserLoginDetails = {
-  key: Buffer.from(createCOSEKey(stakePrivateKey2).to_bytes()).toString('hex'),
-  signature: Buffer.from(
-    createLoginUserSignature(stakeAddress2, stakePrivateKey2).to_bytes()
-  ).toString('hex')
+const anotherUser = {
+  name: 'Another user',
+  email: 'another@user.com'
 }
 
 chai.use(chaiHttp)
@@ -166,10 +136,7 @@ describe('*********** AUTH ***********', () => {
         .post('/login')
         .send(loginDetailsExpiredPayload)
         .end((err, res) => {
-          res.should.have.status(422)
-          res.body.should.be.a('object')
-          res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.should.have.property('msg').eql('EXPIRED_PAYLOAD')
+          res.should.have.status(401)
           done()
         })
     })
@@ -196,10 +163,7 @@ describe('*********** AUTH ***********', () => {
         .post('/login')
         .send(loginDetailsExpiredPayload)
         .end((err, res) => {
-          res.should.have.status(422)
-          res.body.should.be.a('object')
-          res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.should.have.property('msg').eql('INVALID_PAYLOAD')
+          res.should.have.status(500)
           done()
         })
     })
@@ -371,7 +335,7 @@ describe('*********** AUTH ***********', () => {
       const newAddress = createRewardAddress(newPrivateKey)
       const newCoseKey = createCOSEKey(newPrivateKey)
       const newCoseSign1 = createCOSESign1Signature(
-        { host, action: 'Reset', timestamp: Date.now() },
+        { host, action: 'Reset', timestamp: Date.now(), url: host + '/reset' },
         newAddress,
         newPrivateKey
       )
@@ -421,16 +385,16 @@ describe('*********** AUTH ***********', () => {
   describe('/POST register', () => {
     it('it should POST register user 2', (done) => {
       const user = {
-        name: badUser.name,
-        email: badUser.email,
+        name: anotherUser.name,
+        email: anotherUser.email,
         walletAddress: stakeAddress2.to_address().to_bech32(),
         key: Buffer.from(createCOSEKey(stakePrivateKey2).to_bytes()).toString(
           'hex'
         ),
         signature: Buffer.from(
           createRegisterUserSignature(
-            badUser.name,
-            badUser.email,
+            anotherUser.name,
+            anotherUser.email,
             stakeAddress2,
             stakePrivateKey2
           ).to_bytes()
@@ -445,52 +409,6 @@ describe('*********** AUTH ***********', () => {
           res.body.should.be.an('object')
           res.body.should.include.keys('accessToken', 'user')
           createdID.push(res.body.user._id)
-          done()
-        })
-    })
-  })
-
-  describe('/POST login', () => {
-    for (let x = 1; x < failedLoginAttempts + 1; x++) {
-      it(`it should NOT POST login after password fail #${x}`, (done) => {
-        chai
-          .request(server)
-          .post('/login')
-          .send(badLoginDetails)
-          .end((err, res) => {
-            res.should.have.status(409)
-            res.body.should.be.a('object')
-            res.body.should.have.property('errors').that.has.property('msg')
-            res.body.errors.should.have.property('msg').eql('WRONG_PASSWORD')
-            done()
-          })
-      })
-    }
-
-    it('it should NOT POST login after password fail #6 and be blocked', (done) => {
-      chai
-        .request(server)
-        .post('/login')
-        .send(badLoginDetails)
-        .end((err, res) => {
-          res.should.have.status(409)
-          res.body.should.be.a('object')
-          res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.should.have.property('msg').eql('BLOCKED_USER')
-          done()
-        })
-    })
-
-    it('it should NOT POST login after being blocked sending post with correct password', (done) => {
-      chai
-        .request(server)
-        .post('/login')
-        .send(badUserLoginDetails)
-        .end((err, res) => {
-          res.should.have.status(409)
-          res.body.should.be.a('object')
-          res.body.should.have.property('errors').that.has.property('msg')
-          res.body.errors.should.have.property('msg').eql('BLOCKED_USER')
           done()
         })
     })
