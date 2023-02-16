@@ -116,6 +116,7 @@ describe('*********** AUTH ***********', () => {
       const payload = {
         host: process.env.HOST,
         action: 'Login',
+        url: '/login',
         timestamp:
           Date.now() - process.env.PAYLOAD_VALIDITY_IN_SECONDS * 1000 - 1
       }
