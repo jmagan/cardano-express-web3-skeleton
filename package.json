@@ -146,6 +146,9 @@
     "mocha",
     "chai",
     "redis",
-    "JSDoc"
+    "JSDoc",
+    "CIP",
+    "93",
+    "CIP-0093"
   ]
 }
