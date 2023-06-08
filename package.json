@@ -84,7 +84,7 @@
     "nodemailer": "^6.8.0",
     "nodemailer-mailgun-transport": "^2.1.5",
     "passport": "^0.6.0",
-    "passport-cardano-web3": "^1.0.1",
+    "passport-cardano-web3": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "request-ip": "^2.2.0",
     "trim-request": "^1.0.6",
