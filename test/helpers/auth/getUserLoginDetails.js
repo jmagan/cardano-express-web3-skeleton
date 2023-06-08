@@ -19,7 +19,7 @@ const getUserLoginDetails = (host) => {
     const payload = {
       host,
       action: 'Login',
-      url: host + '/login',
+      uri: host + '/login',
       timestamp: Date.now()
     }
     return createCOSESign1Signature(payload, address, privateKey)

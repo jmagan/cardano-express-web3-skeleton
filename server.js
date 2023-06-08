@@ -68,7 +68,11 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(compression())
-app.use(helmet())
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
+)
 app.use(express.static('public'))
 app.use(cookieParser())
 app.set('views', path.join(__dirname, 'views'))

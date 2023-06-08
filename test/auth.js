@@ -51,7 +51,7 @@ const createRegisterUserSignature = (name, email, address, privateKey) => {
     name,
     email,
     timestamp: Date.now(),
-    url: host + '/register'
+    uri: host + '/register'
   }
 
   return createCOSESign1Signature(payload, address, privateKey)
@@ -116,7 +116,7 @@ describe('*********** AUTH ***********', () => {
       const payload = {
         host: process.env.HOST,
         action: 'Login',
-        url: '/login',
+        uri: '/login',
         timestamp:
           Date.now() - process.env.PAYLOAD_VALIDITY_IN_SECONDS * 1000 - 1
       }
@@ -336,7 +336,7 @@ describe('*********** AUTH ***********', () => {
       const newAddress = createRewardAddress(newPrivateKey)
       const newCoseKey = createCOSEKey(newPrivateKey)
       const newCoseSign1 = createCOSESign1Signature(
-        { host, action: 'Reset', timestamp: Date.now(), url: host + '/reset' },
+        { host, action: 'Reset', timestamp: Date.now(), uri: host + '/reset' },
         newAddress,
         newPrivateKey
       )

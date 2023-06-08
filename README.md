@@ -220,11 +220,11 @@ If you need to add more routes to the project just create a new file in `/app/ro
 
 When you create a new controller, try to also create another folder with validations and helpers. Ex. `/countries`, `/countries/validators` and `/countries/helpers`. An example of this is included in the repository.
 
-## Credits
+## Support
 
-This project is started by Daniel Avellaneda. He's prepared a well-thought full backend for authorization and authentication. I've taken advantage from this previous work. So feel free to thank Daniel buying him a coffee.
+If you find it useful, please consider inviting me a coffee :)
 
-<a href="https://www.buymeacoffee.com/muGHf41NT" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+[![DoItWithLovelace](https://app.doitwithlovelace.io/api/og/assets/donationButton)](https://app.doitwithlovelace.io/users/DoItWithLovelace)
 
 ## Bugs or improvements
 
